@@ -26,9 +26,9 @@ Install dependencies:
   |-- MLmodels/            # Contains all the trained models for ML
   |      |-- ....
   |      |-- ....
-  |-- templates/	   # html files
-  |-- static/		   # js, css, images, favicons, etc
-  |-- files/		   # contains the DEIDENTIFIED files
+  |-- templates/	         # html files
+  |-- static/		         # js, css, images, favicons, etc
+  |-- files/		         # contains the DEIDENTIFIED files
   |-- app.py               # main app
   |-- api.py               # api routes to handle requests. Implement ML models here
   |-- dbmodel.py           # database structure/model
@@ -41,12 +41,13 @@ Install dependencies:
   ```
     Request:
     {
-      file: '@filename' // @filename is the name of the file to be deidentified
+      file: '@filename'       // @filename is the name of the file to be deidentified
     }
     
     Response:
     {
       key: 'random_key_value' // required to reidentify parts of the deidentified file (eg: date, name, etc)
+      file: 'file contents'    // deidentified file contents
     }
   ```
   
@@ -54,13 +55,13 @@ Install dependencies:
   ```
     Request:
     {
-      key: 'random_key_value' // key for reidentification
-      identify: ['date', 'name', 'adhar', .... ] // (optional) tells which parts to identify
+      key: 'random_key_value'                      // key for reidentification
+      identify: ['date', 'name', 'adhar', .... ]   // (optional) tells which parts to identify
     }
     
     Response:
     {
-      file: 'file_contents' // reidentified file
+      file: 'file_contents'                        // reidentified file
     }
   ```
 
