@@ -13,9 +13,7 @@ This project contains two separated folders(not related to one another):
 Clone and setup a virtual environment:
    
     git clone https://github.com/AhteshamulHaque/GEHackathon.git
-    cd GEHackathon/Backend
-    python3 -m venv venv
-    source venv/bin/activate
+    cd GEHackathon/App
 
 Install dependencies:
 
