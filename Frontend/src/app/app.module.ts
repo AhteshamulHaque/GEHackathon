@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { ClipboardModule } from 'ngx-clipboard';
 import {MatCheckboxModule} from '@angular/material';
 import {MatButtonModule} from '@angular/material';
 import {MatInputModule} from '@angular/material/input';
@@ -55,6 +56,7 @@ import { ReidentifyComponent } from './reidentify/reidentify.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    ClipboardModule,
     MatCheckboxModule,
     MatCheckboxModule,
     MatButtonModule,

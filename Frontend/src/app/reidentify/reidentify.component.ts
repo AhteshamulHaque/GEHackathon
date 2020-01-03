@@ -9,12 +9,6 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class ReidentifyComponent {
 
-  dataToIdentify: any = [
-    ['date', 'Date'],
-    ['name', 'Name'],
-    ['adharcard', 'Adhar Card']
-  ];
-
   FLAGS = {
     isDeidentificationInProgress: false
   };
@@ -28,19 +22,18 @@ export class ReidentifyComponent {
 
   identifyData() {
     
-    if(this.key.valid && this.identify.valid) {
+    if(this.key.valid) {
 
       this.FLAGS.isDeidentificationInProgress = true;
 
       const fd = new FormData();
       fd.append('key', this.key.value);
-      fd.append('identify', this.identify.value);
-      
+
       this.service.httpPost('http://localhost:5000/api/reidentify', fd)
         .subscribe(
           data => {
             // send result to parent element
-            this.resultEvent.emit(data);
+            this.resultEvent.emit(data.file);
           },
           error => console.log(error),
           () => this.FLAGS.isDeidentificationInProgress = false

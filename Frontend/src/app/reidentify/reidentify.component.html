@@ -8,19 +8,9 @@
   <mat-grid-list cols="8" rowHeight="70px">
 
    <!-- Key for Reidentification -->
-   <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <mat-form-field style = "width: 80%">
+   <mat-grid-tile [colspan]="8" [rowspan]="1">
+      <mat-form-field style = "width: 40%">
          <input matInput [formControl]="key" placeholder="Identification Key" value="">
-      </mat-form-field>
-   </mat-grid-tile>
-
-   <!-- Fields to reidentify -->
-   <mat-grid-tile [colspan]="4" [rowspan]="1">
-      <mat-form-field style = "width: 80%">
-         <mat-label>Identify</mat-label>
-         <mat-select [formControl]="identify" multiple>
-           <mat-option *ngFor="let data of dataToIdentify" [value]="data[0]">{{ data[1] }}</mat-option>
-         </mat-select>
       </mat-form-field>
    </mat-grid-tile>
 

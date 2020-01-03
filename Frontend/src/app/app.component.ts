@@ -15,17 +15,18 @@ export class AppComponent {
 
   isResult = false;
   result = '';
+  resultToShow = '';
 
   constructor(public service: IdentifyService) {}
 
   displayResult(data) {
-    this.result = JSON.stringify(data);
+    this.result = data;
+    this.resultToShow = this.result.replace(/\n/g, '<br>');
     this.isResult = true;
   }
 
-  copyTextToClipboard(result) {
-    // result.select();
-    // document.execCommand("copy");
+  copyTextToClipboard() {
+    this.service.copy(this.result);
     this.service.openSnackBar("Text Copied");
   }
   
