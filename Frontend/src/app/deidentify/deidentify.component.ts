@@ -66,6 +66,7 @@ export class DeidentifyComponent {
   }
   
   copyKeyToClipboard() {
+    this.service.copy(this.key);
     this.service.openSnackBar("Key copied");
   }
 
