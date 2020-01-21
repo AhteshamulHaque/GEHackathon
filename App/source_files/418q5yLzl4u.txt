@@ -1,0 +1,2000 @@
+exit
+ls
+git status
+git pull origin master
+git status
+git add .
+git commit -m "Updated database for dec-2019"
+git push origin master
+mysql -proot -uroot
+mysql -uroot
+mysql
+mysql -uroot
+mysql -uroot -pHaque8900@
+cls
+exit
+git status
+git add .
+git commit -m "Modified backup.sql"
+git push origin master
+dir
+exit
+git status
+git pull origin master
+exit
+mysql -uroot -pHaque8900@
+exit
+git status
+git add .
+git commit -m "Added new backup"
+git push origin master
+clear
+git add .
+git commit -m "Added new backup with some more function"
+git push origin master
+mysql -proot
+mysql -pHaque8900@
+mysql -uroot -pHaque8900@
+git status
+git pull origin master
+git status
+git add .
+git commit -m "another commit for backup.sql"
+git push origin master
+git status
+git add .
+git commit -m "Added backup.sql"
+git push origin master
+git status
+git add .
+git commit -m "another commit"
+git push origin master
+mysql -uroot -pHaque8900@
+exit
+python
+exit
+cat > test.sql
+clear
+ls
+mysql -uroot
+mysql -uroot -p
+clear
+python
+mysql -uroot -p
+exit
+mysql -uroot -p
+cls
+clear
+mysql -uroot -p
+clear
+mysqldump -hlocalhost -uroot -p --databases 'nilekrator$ADMIN' -nilekrator$CREDITS' 'nilekrator$_2015' 'nilekrator$_2016' 'nilekrator$_2017' 'nilekrator$_2018'  'nilekrator$_2019' > totalbackup.sql
+mysqldump -hlocalhost -uroot -p --databases 'nilekrator$ADMIN' 'nilekrator$CREDITS' 'nilekrator$_2015' 'nilekrator$_2016' 'nilekrator$_2017' 'nilekrator$_2018'  'nilekrator$_2019' > totalbackup.sql
+ls -lh
+exit
+git status
+git add .
+git commit -m "Finally fixed backup.sql"
+git push origin master
+exit
+git status
+git add .
+git commit -m "Added seperate sql files"
+git push origin master
+exit
+git status
+git add .
+git commit -m "Last sql file commit"
+git push origin master
+git status
+git add .
+git commit -m "Creation of table problem"
+git push origin master
+git status
+git add .
+git commit -m "nothing"
+git push origin master
+git status
+exit
+git pull origin master
+git status
+git checkout master
+exit
+python3 deidentifier.py
+exit
+git status
+git branch
+exit
+git checkout bittu
+dir
+cd App
+clear
+python3
+ls
+clear
+python3
+exit
+jupyter notebook
+ls
+python3
+clear
+python3 app.py
+npm install --save
+ng serve
+exit
+pip3 install flask-cors
+exit
+git branch
+dir
+cd App
+dir
+python3 app.py
+python3
+python3 -m spacy download en_core_web_sm
+clear
+python3 app.py
+locate encore
+locate en_core_web_
+locate en_core_web
+python3 app.py
+clear
+python3 app.py
+clear
+python3 app.py
+clear
+python3 app.py
+python3 -m spacy download en_core_web_smclear
+clear
+python3 app.py
+clear
+python3 app.py
+cd ../Frontend
+clear
+dir
+ls
+cd src
+clear
+ls
+ng serve
+cd ../../App
+clear
+python3 app.py
+clear
+python3 app.py
+clear
+python3 app.py
+exit
+ng build --prod
+cd ..
+dir
+cd App
+python
+clear
+python3
+clear
+exit
+python3 -m spacy download en_core_web_smclear
+clear
+exit
+python3
+clear
+git status
+git add .
+git commit -m "Combined ML and WEB parts"
+git
+git branch --help
+clear
+git branch
+git checkout master
+git checkout bittu
+git branch --help
+git pull origin master
+git push origin master
+git push --help
+git pull
+git pull --set-upstream-to=origin/bittu
+git pull --all
+cd ..
+dir
+cd frontend
+dir
+clear
+ng add @angular/material
+npm audit fix
+ng serve
+ng g c deidentify --inline-css
+ng g c deidentify --inline-style
+ng g c reidentify --inline-style
+ng g s identify
+cd ..
+dir
+clear
+dir
+clear
+cd Frontend
+clear
+ng serve
+npm install ngx-clipboard --save
+clear
+ng serve
+exit
+git branch
+git pull origin master
+git merge master
+git branch
+git log
+git push origin master
+git push --help
+git push --all
+git branch
+git checkout master
+git pull origin master
+git status
+git branch -d bitty
+git branch -d bittu
+git branch
+exit
+clear
+gcc test.c
+./a.out
+gcc test.c
+clear
+./a.out
+gcc test.c
+./a.out
+gcc test.c
+./a.out
+gcc test.c
+./a.out
+clear
+gcc test.c
+./a.out
+gcc test.c
+./a.out
+gcc test.c
+./a.out
+gcc test.c
+./a.out
+gcc test.c
+./a.out
+clear
+gcc test.c
+clear
+./a.out
+clear
+gcc test.c
+./a.out
+gcc test.c
+./a.out
+gcc test.c
+./a.out
+clear
+ps -el
+ps -el | grep rise
+ps -el | grep vpn
+kill 14842
+exit
+ls
+pip3 install json-logging-python-master.zip
+exit
+python3 setup.py
+exit
+git status
+clear
+git status
+exit
+ls
+python3 flask_sample_app.py
+exit
+python3 app.py
+exit
+python3 non_web.py
+ls
+python3 flask_sample_app.py
+clear
+ls
+python3 custom_log_format.py
+clear
+python3 flask_sample_app.py 
+clear
+python3 flask_sample_app.py 
+clear
+python3 flask_sample_app.py 
+clear
+python3 flask_sample_app.py 
+clear
+python3 flask_sample_app.py 
+clear
+python3 flask_sample_app.py 
+clear
+python3 flask_sample_app.py 
+clear
+python3 flask_sample_app.py 
+clear
+python3 flask_sample_app.py 
+clear
+python3 flask_sample_app.py 
+clear
+python3 flask_sample_app.py 
+clear
+python3 flask_sample_app.py 
+exit
+cd python
+ls
+python app.py
+exit
+python3 flask_sample_app.py
+clear
+python3 flask_sample_app.py
+clear
+python3 flask_sample_app.py
+clear
+python3 flask_sample_app.py
+clear
+python3 flask_sample_app.py
+exit
+python3 flask_sample_app.py
+pip3 install flask
+python3 flask_sample_app.py
+exit
+python3 flask.py
+cd python
+python3 app.py
+clear
+python3 app.py
+clear
+python3 app.py
+clear
+python3 app.py
+clear
+python3 app.py
+clear
+python3 app.py
+clear
+python flask.py
+clear
+python3 flask.py
+clear
+exit
+git status
+git init
+echo "# flask-chat-app" >> README.md
+git status
+git add .
+git commit -m "first commit"
+git remote add origin https://github.com/AhteshamulHaque/flask-chat-app.git
+git push origin master
+clea
+clear
+python3 main.py
+pip3 install flask_socketio
+python3 main.py
+python3
+clear
+cd ..
+clear
+ls
+clear
+exit
+npm init -y
+npm i --save mongoose express
+node server
+clear
+node server
+exit
+python 
+clear
+exit
+npm init -y
+node
+clear
+exit
+heroku
+exit
+mongo --quiet
+node
+clear
+exit
+ng new angular-src
+ls
+rm -r angular-src
+ls
+clear
+cd angular-src
+dir
+clear
+ng g c navbar
+clear
+ng g c login
+ng g c register
+ng g c home
+ng g c dashboard
+ng g c profile
+clear
+ng serve
+gcc filees
+cd /
+cd ~
+cd cpp
+dir
+gcc test.c
+ls
+./a.out
+popd
+pop
+push
+pushd
+push d .
+pushd .
+exit
+ng serve
+ls
+cd app
+cd services
+dir
+ng g s validate
+clear
+cd ..
+clear
+ng serve
+ng add angular2-flask-messages
+ng add angular2-flash-messages
+npm audit fix
+ckear
+clear
+ng serve
+cd ../../../../
+dir
+rm -r meanApp
+sudo rm -r meanApp
+dir
+clear
+exit
+npm i --save express mongoose bcryptjs cors jsonwebtoken body-parser passport passport-jwt
+clear
+npm start
+nodemon
+sudo npm i -g nodemon 
+clear
+npm start
+clear
+nodemon
+clear
+nodemon
+npm start
+clear
+nodemon
+clear
+nodemon
+clear
+nodemon
+clear
+nodemon
+clear
+nodemon
+clear
+nodemon
+clear
+nodemon
+clear
+nodemon
+clear
+nodemon
+clear
+nodemon
+clear
+nodemon
+clear
+nodemon
+clear
+nodemon
+cat > progress.txt
+clear
+exit
+ps -el | grep vlc
+kill 24785
+kill -s SIGINT 24785
+exit
+mysql -uroot -p
+exit
+mongo --quite
+mongo --quiet
+clear
+exit
+mysql -uroot -p
+exit
+mongo --quiet
+exit
+cd cpp
+ls
+clear
+gcc test.c
+clear
+gcc test.c
+clear
+gcc test.c
+clear
+gcc test.c
+clear
+gcc test.c
+clear
+gcc test.c
+./a.out
+gcc test.c
+./a.out
+gcc test.c
+./a.out
+gcc test.c
+clear
+gcc test.c
+./a.out
+gcc test.c
+./a.out
+mysql -uroot -p
+clear
+python
+exit
+ps -ef | grep vlc
+ps -el | grep vlc
+kill 19854
+kill -s SIGINT 19854
+exit
+pytohn
+python3
+exit
+ps -el | grep vlc
+kill -s SIGINT  25098
+exit
+npm init
+git status
+git init
+git status
+git add README.md
+cat "# cli_rpf" >> README.md
+echo "# cli_rpf" >> README.md
+git status
+git add .
+git commit -m "first commit"
+git remote
+git remote add origin https://github.com/AhteshamulHaque/cli_rpf.git
+clear
+exit
+git status
+ls
+git status
+exit
+git status
+clear
+exit
+node
+clear
+git config --help
+git --list
+git config --list
+git config --help
+clear
+exit
+npm install --save commander chalk winston
+npm fund
+ls
+node app
+clear
+node app
+node app --help
+npm install --save mongoose
+npm audit fix
+clear
+exit
+git clone --help
+git --help
+git status --help
+clear
+git --help
+clear
+exit
+node app
+clear
+node app
+clear
+node app --=sf
+node app --help
+clear
+node app --help
+node app config --help
+node app config
+node app config --help
+clear
+node app config --help
+node app --help
+clear
+node app nile
+git -h
+git --help
+clear
+ls
+cd resultporta.v2
+clear
+ls
+cd cli_rpf
+clear
+ls
+node app --help
+clear
+node app --help
+node app --config --help
+clear
+node app
+node app config
+cd ../..
+clear
+ls
+cd resultportal.v2
+clear
+ls
+c cli_rpf
+clear
+ls
+cd cli_rpf
+clear
+ls
+node app
+node app config
+node app config --help
+clear
+node app config --help
+node app
+node app --help
+node app config --help
+clear
+node app student -s nilekrator
+node app config --help
+node app config --init
+clear
+node app config --init
+node app config --set nile=krator
+clear
+node app config --set nile=krator
+node app config --set nile..krator
+clear
+node app config --set nile..krator
+clear
+node app config --set nile..krator
+node app
+clear
+node app --recursive
+node app rm nile --recursive
+node app rm nile
+clear
+node app config --set nile..krator
+exit
+exit
+flutter
+flutter create ecommerce
+exit
+ls
+node app config --init
+exit
+flutter
+clear
+git --help
+git log
+git rebase
+git tag
+clear
+flutter --help
+node
+clear
+node
+clear
+node
+clear
+node
+exit
+python3
+exit
+git status
+git add .
+git status
+git add .
+git commit -m "added config command"
+git push origin master
+exit
+c;ear
+clear
+git status
+npm i --save
+clear
+npm --help
+npm outdated
+npm whoami
+npm v
+npm version
+clear
+npm 
+npm list
+npm config --help
+exit
+dir
+cd AndroidStudioProjects
+dir
+clear
+flutter
+flutter screenshot --help
+flutter create --help
+ls
+sudo rm -r pokemon
+ls
+flutter rm -r quotes
+rm -r quotes
+clear
+dir
+rm -r flutter_app
+clear
+rm -r ecommerce/
+clear
+flutter create ecommerce
+clear
+rm -r ecommerce  
+clear
+flutter create ecommerce
+clear
+exit
+echo 10 > progress.txt
+su
+clear
+ls
+rm -r Sdk
+exit
+cd Projects/resultporta.v2
+cd Projects/resultportal.v2
+dir
+clear
+cd cli_rpf
+clear
+ls
+cd test
+clear
+ls
+node tset
+clear
+node test
+clear
+cd ..
+clear
+npm i --save
+cd test
+node test
+cd ..
+clear
+cd cli_rpf
+clear
+node app
+npm remove axios
+node test/test
+npm i --save axios
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+python3 app.py
+clear
+python3 app.py
+clear
+python3 app.py
+clear
+python3 app.py
+clear
+python3 app.py
+clear
+python3 app.py
+clear
+ext
+exit
+cd Projects
+dir
+cd resultportal.v2
+ls
+cd cli_rpf
+clear
+ls
+node test/test
+clear
+node test/test
+node test/test | bunyan
+clear
+node test/test | ./node_modules/bunyan
+node test/test | ./node_modules/bunyan/bin
+node test/test | ./node_modules/bunyan/bin/bunyan
+clear
+node test/test | ./node_modules/bunyan/bin/bunyan
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+note test/test
+node test/test
+clear
+node test/test
+/
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test.js [B
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+ls
+cat error.log
+mongo --quiet
+clear
+cd ../..
+dir
+clear
+ls
+git clone https://github.com/AhteshamulHaque/facebookExtension.git
+python
+clear
+mongo
+clear
+exit
+python
+clear
+node test/test
+clear
+ls
+cd resultportal.v2
+clear
+ls
+cd cli_rpf
+clearl
+clear
+ls
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+exit
+npm i --save bunyan winston
+npm i --save winston
+clear
+npm remove bunyan
+clear
+cd Projects/
+dir
+cd resultportal.v2
+dir
+cd cli_rpf/
+dir
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+python3
+clear
+exit
+cat > kaggletrain.csv
+clear
+exit
+pip3 install sklearn
+python3
+clear
+exit
+jupyter  notebook
+exit
+python
+exit
+cat > test.c
+clear
+ls
+g++ test.c
+clear
+g++ test.c
+clear
+./a.out
+exit
+gcc test.c
+./a.out
+gcc test.c
+./a.out
+clear
+./a.out
+gcc test.c
+./a.out
+clear
+gcc test.c
+./a.out
+gcc test.c
+./a.out
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+sudo apt-get install octave
+octave
+clear
+matlab
+mtlb
+mtlab
+exit
+jupyter notebook
+node
+clear
+exit
+npm i --save argparse
+exit
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+node test/test
+clear
+npm remove commander
+sudo npm install -g npm
+clear
+npm remove argparse
+npm i --save commander
+git
+man
+man --help
+npm =
+ng
+node
+clear
+cd Projects/resultportal.v2
+clear
+ls
+cd cli_rpf
+clear
+ls
+node test/test
+cat test/test
+cat test/test.js
+clear
+node test/test
+node
+clear
+node test/test
+clear
+node test/test
+clear
+jupyter notebook
+exit
+npm init
+clear
+git init
+git status
+git add .gitignore
+git add .
+git commit -m "first commit"
+git remote add origin https://github.com/AhteshamulHaque/resultportal.v2.git
+git remote
+git push origin master
+git pull origin master
+clear
+git push origin master
+git status
+git pull origin master
+ls
+rm -r *
+clear
+ls
+clear
+ls -h
+ls -lh
+clear
+git init
+git remote add origin https://github.com/AhteshamulHaque/resultportal.v2.git
+git pull origin master
+dir
+ls -lh
+clear
+ls -a
+git status
+npm init
+ls
+clear
+git status
+git add .
+git commit -m 'first commit'
+git push origin master
+cd ..
+git status
+cd resultportal
+clear
+ls
+ls -lh
+git status
+git repo
+git remote
+git branch
+git fetch master
+git fetch https://github.com/AhteshamulHaque/resultportal.v2.git
+git status
+git ls
+ls
+git log
+clear
+ls -lah
+git status
+git commit -m 'added package.json'
+git push origin master
+git pull origin master
+rm -r *
+clear
+ls
+ls -ah
+rm -r .git
+sudo rm -r .git
+rm -r .gitignore
+clear
+git init
+git remote add origin https://github.com/AhteshamulHaque/resultportal.v2.git
+git status
+git pull origin master
+git status
+ls -lh
+ls -ah
+clear
+npm init
+clear
+git status
+git add .
+git commit -m 'added package.json'
+git push origin  master
+exit
+python3
+clear
+curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
+echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+sudo apt update
+sudo apt install brave-browser
+clear
+cd Projects/resultportal.v2
+clear
+ls
+cd cli_rpf
+clear
+npm test
+npm install --save request
+clear
+npm test
+clear
+npm test
+clear
+npm test
+clear
+npm test
+clear
+npm test
+clear
+ls
+cat test/test
+clear
+cat error.log
+rm error.log
+clear
+ls
+cat test/config.test.js
+clear
+npm test
+clear
+npm test
+clear
+npm test
+clear
+npm test
+clear
+npm test
+clear
+npm test
+clear
+npm test
+clear
+npm test
+clear
+npm test
+cd lib/config/
+clear
+ls
+node
+clear
+ls
+node
+clear
+npm test
+node
+clear
+node
+clear
+npm test
+clear
+git status
+cd ..
+clear
+dir
+ls
+git status
+ls
+npm install --save
+npm audit
+clear
+ls
+git status
+ls -a
+cat .gitignore
+clear
+git status
+git commit -m "added test for config command"
+git add .
+git commit -m "added test for config command"
+git push origin master
+clear
+exit
+node
+clear
+exit
+ls
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+npm i --save himalaya
+npm i --save dotenv
+clear
+cd Project/resultportal.v2
+cd Project
+ls
+cd Projects
+clear
+ls
+cd resultportal.v2
+cd cli_rpf/
+dir
+cls
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+reset
+node test
+clear
+node test
+reset
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clera
+clear
+clera
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clearclear
+clear
+node test
+clearclear
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+cler
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node test
+clear
+node
+set | less
+echo $MY_NAME
+clear
+node
+set | less
+echo $MY_NAME
+clear
+c;ear
+clear
+node test
+git status
+git add .
+git status
+git commit -m "fetch command almost complete"
+git push origin master
+clear
+git logs
+git log
+clear
+exit
+python3
+exit
+python3
+clear
+ls
+test.pdf
+python3
+clear
+exit
+python3
+clear
+exit
+npm install --save solc
+exit
+ls
+npm init -y
+clear
+npm install --save solc
+exit
+pyrhon3
+python3
+ls
+cd Projects
+ls
+mkdir -p blockchain
+dir
+cd $_
+cd blockchain
+clear
+ls
+clear
+npm install ehtereumjs-testrpc web3
+npm install ethereumjs-testrpc web3
+ls
+rm -r *
+ls
+clear
+cd ..
+rm blockchain -r
+clear
+ls
+pip3 install web3
+clear
+python3
+clear
+sudo add-apt-repository -y ppa:ethereum/ethereum
+sudo apt-get update
+sudo apt-get install ethereum
+geth
+geth --help
+clear
+geth --rpc
+ls
+parity
+sudo snap install parity
+bigchain
+bigchaindb
+exit
+snap list
+sudo snap --help
+sudo snap info parity
+sudo snap remove parity
+sudo apt clean
+sudo apt remove geth
+clear
+sudo apt --help
+sudo apt autoremove
+exit
+git clone https://github.com/bigchaindb/bigchaindb.git
+exit
+ls
+sudo chmod +x /usr/local/bin/docker-compose
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+clear
+docker-compose --version
+eit
+exit
+mysql -uroot
+mysql -uroot -p
+clear
+pip3 install bigchaindb-driver
+clear
+npm i -g bigchain-driver
+sudo npm i -g bigchain-driver
+sudo npm i -g bigchaindb-driver
+exit
+curl -X GET http://localhost:9984/
+clear
+exit
+ls
+make run
+docker-machine start default
+docker-machine ls
+sudo curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+ls
+make run
+docker-machine start default
+docker-machine ls
+docker-machine create
+nano Makefile
+clear
+ls
+./run-acceptance-test.sh
+sudo snap start docker
+sudo systemctl start docker
+sudo service docker start
+clear
+make run
+sudo docker-compose build
+clear
+ls
+cd snap
+dir
+ls
+cd ..
+cler
+clear
+ls
+python3 setup.py
+cd bigchaindb
+dir
+cd ..
+clear
+ls
+make run
+docker-machine create default
+clear
+sudo apt install -y python3-pip libssl-dev
+sudo pip3 install bigchaindb==2.0.0
+clear
+ls
+make start
+clear
+bigchain
+bigchaindb
+bigchaindb start
+clear
+python3 setup.py install
+sudo python3 setup.py install
+rethinkdb
+clear
+bigchaindb -y configure
+clear
+bigchaindb init
+clear
+bigchaindb start
+clear
+cd ..
+ls
+exit
+mongo
+mongodump -d=meanauth
+ls
+mongoexport -d=meanauth
+mongoexport --help
+mongoexport --host=localhost --port=27017
+mongoexport --host=localhost --port=27017 --slaveOK
+mongoexport --host=localhost --port=27017 --slaveOk
+clear
+exit
+mongoexport --db=meanauth --collection=users --out myfile.json --pretty
+exit
+mongo --quiet
+clear
+mongoexport --db=meanauth --out myfile.json
+mongoexport --db=meanauth --collection=* --out myfile.json
+mongoexport --db=meanauth --collection=users --out myfile.json
+exit
+mongoimport -h
+mongoimport --help
+mongoimport --db=meanauth --collection=newuser myfile.json
+mongo --quiet
+clear
+exit
+pip3 install pymongo
+exit
+python3
+clear
+exit
+pip3 install pymongo
+python3
+clear
+exit
+jupyter notebook
+clear
+jupyter notebook
+exit
+mysql -uroot -p
+exit
+mongoimport --db=accounts --collections=students users.json
+mongoimport --db=accounts --collection=students users.json
+mongo
+clear
+mongo --quiet
+clear
+exit
+python3
+clear
+exit
+python3
+clear
+exit
+mongoexport --db=meanauth --collection=users --out myfile.json
+mysql -uroot -pHaque8900@
+exit
+ls
+mongoimport --db=accounts --collection=downloaded accounts.downloaded.json
+for year in (2015, 2016, 2017, 2018, 2019); do echo $year;done
+for year in @(2015, 2016, 2017, 2018, 2019); do echo $year;done
+for year in @(2015 2016 2017 2018 2019); do echo $year;done
+for year in (2015 2016 2017 2018 2019); do echo $year;done
+year=(2015 2016 2017 2018 2019)
+years=(2015 2016 2017 2018 2019)
+for year in ${years[*]}; do echo $year;done
+for year in ${years[*]}; do mongoimport --db=result --collection=metadata $year.metadata.json; done;
+clear
+for year in ${years[*]}; do mongoimport --db=metadata --collection=$year $year.metadata.json; done;
+exit
+mongoimport --database=accounts --collection=subjects accounts.subjects.json
+mongoimport --db=accounts --collection=subjects accounts.subjects.json
+mongo --quiet
+clear
+ls
+mongoimport --help
+clear
+mongo --quiet
+clear
+mongo --quiet
+exit
+for year in ${years[*]}; do mongoimport --db=$year --collection=metadata $year.metadata.json; done;
+ls
+for year in ${years[*]}; do mongoimport --db=$year --collection=metadata $year.metadata.json; done;
+for year in ${years[*]}; do mongoimport --db=year$year --collection=metadata $year.metadata.json; done;
+for year in ${years[*]}; do mongoimport --db=year --collection=metadata$year $year.metadata.json; done;
+for year in ${years[*]}; do mongoimport --db=year --collection=metadata $year.metadata.json; done;
+ls
+years=(2015 2016 2017 2018 2019)
+for year in ${years[*]}; do mongoimport --db=$year --collection=metadata $year.metadata.json; done;
+mongo --quiet
+exit
+jupyter notebook
+locate
+locate anaconda
+clear
+ls
+sudo rm -r anaconda3 
+exit
+exit
+jupyter notebook
+clear
+exit
+jupyter --help
+jupyter --config-dir
+jupyter --runtime-dir
+jupyter --paths
+ipython
+clear
+which -a python
+which -a ipython
+which -a jupyter
+python3
+jupyter kernelspec list
+clear
+exit
+jupyter --help
+jupyter --json
+jupyter --config-dirs --json
+clear
+jupyter --help
+jupyter ipython
+clear
+jupyter notebook
+ls
+sudo bash Anaconda3-2019.10-Linux-x86_64.sh
+exit
+jupyter
+exit
+jupyter
+conda init
+exit
+ls
+ln jupyter /usr/bin/jupyter
+sudo ln jupyter /usr/bin/jupyter
+jupyter
+jupyter notebook
+rm /usr/bin/jupyter
+sudo rm /usr/bin/jupyter
+clear
+ls
+conda init
+conda
+./coda
+./conda init
+exit
+conda config --help
+conda config --show
+conda config --set changeps1 False
+exit
+pip3 install bson
+pip3 install pymongo
+exit
+python3 -m pip install pymongo
+python3 -m pip --user install pymongo
+python3 -m pip install --user pymongo
+which python3
+which python
+exit
+python3
+clear
+exit
+ls
+python3 app.py
+pip3 install flask.ext
+which pip3
+which python3
+clear
+sudo update-alternatives --config python3
+/usr/bin/python3
+sudo update-alternatives --set python /usr/bin/python3
+cd /usr/bin
+ls
+sudo update-alternatives --set python /usr/bin/python3.7
+sudo update-alternatives --set python3 /usr/bin/python3.7
+exit
+git clone https://github.com/bigchaindb/bigchaindb-examples.git
+ls
+cd bigchaindb-examples
+dr
+clear
+ls
+bigchaindb-examples
+python3 setup.py install
+python3 install setup.py
+python3 setup.py
+python3 setup.py init
+python3 setup.py --init
+python3 setup.py --help-commands
+python3 setup.py build
+bigchaindb-examples
+python3 setup.py install
+sudo python3 setup.py install
+clear
+bigchaindb-examples
+bigchaindb-examples --help
+clear
+exit
+which python
+clear
+set | less
+file
+file --help
+file  -v
+clear
+exit
+conda init
+jupyter notebook
+exit
+which python
+which python3
+update-alternatives --help
+sudo update-alternatives --install /usr/bin/python3.7 python3 /usr/bin/python3.7 1
+sudo update-alternatives --install /usr/bin/python3.7 python3 1
+sudo update-alternatives --config python
+sudo update-alternatives --config python3
+sudo update-alternatives --all
+clear
+sudo update-alternatives --help
+sudo update-alternatives --display python
+sudo update-alternatives --display python3
+sudo update-alternatives --display py
+sudo update-alternatives --display py3
+sudo update-alternatives --display pip
+locate python3
+/usr/bin/python3
+/usr/bin/python3.7
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3/7 1
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 1
+clear
+sudo update-alternatives --display python
+sudo update-alternatives --display python3
+which python
+which python3
+exit
+cd /usr/lib
+dir
+cd python
+ls | grep python
+cd python3
+dir
+cd dist-packages
+dir
+cd urllib3
+dir
+cd ..
+clear
+cd ..
+clear
+exit
+which python3
+which python
+clear
+exit
+python3 app.py
+pip3 install cors
+pip3 install flask-cors
+python3
+clear
+python3 app.py
+pip3 install bigchaindb
+python3
+pip3 install bigchaindb.crypto
+exit
+python3
+clear
+exit
+cd Projects
+dir
+cd bigchaindb-examples/
+dir
+cd server
+dir
+clear
+python3 app.py
+clear
+python3 app.py
+pythohe
+pythoh3
+pytho3
+python3
+/usr/bin/python3
+clear
+exit
+pip3 install cryptoconditions
+exit() { exit }; ;
+exit() { exit; }
+exit
+exit()
+unset exit
+exit
+mongo --quiet
+clear
+exit
+ls
+cd lib
+ls
+cd fetch
+cmp fetch.js index.js
+cmp --help
+cmp fetch.js index.js --verbose
+exit
+ls
+sudo rm -r bigchaindb-examples/
+clear
+git clone https://github.com/Dentosal/SimpleChat.git
+ls
+cd SimpleChat
+ls
+cd app
+clear
+ls
+python3 app.py
+pip3 install redis
+python3 app.py
+redis
+pip3 uninstall redis
+cd ..
+clear
+pip3 uninstall redis
+clear
+ls
+exit
+ngrok http 80
+exit
+ssh -R 80:localhost:3000 serveo.net
+exit
