@@ -1,0 +1,9 @@
+<!-- templates/profile.html -->
+
+{% extends "admin/base.html" %}
+
+{% block content %}
+<h1 class="title">
+  {{ current_user.username }}
+</h1>
+{% endblock %}

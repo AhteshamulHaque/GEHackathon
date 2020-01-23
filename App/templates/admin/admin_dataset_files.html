@@ -1,0 +1,52 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+<div class="ui container">
+   <table class="ui compact celled table">
+      <thead>
+         <tr>
+         <th class="ten wide">Filename</th>
+         <th class="two wide">Size</th>
+         <th class="two wide">Type</th>
+         <th class="two wide"></th>
+         </tr>
+      </thead>
+      <tbody>
+         <!-- Render the dataset -->
+         <!-- id, name, description , file_count, total: sql fields -->
+         {% for data in datasets %}
+            <tr>
+                  <td><a href="{{ url_for('admin.dataset_with_id', dset_id=data['id']) }}">{{ data['name'] }}</a></td>
+                  <td>{{ data['file_count'] }}</td>
+                  <td class="collapsing">
+                     <a href="#" class="ui button primary">Download<a>
+                  </td>
+            </tr>
+         {% endfor %}
+
+      </tbody>
+      <tfoot class="full-width">
+         <tr>
+         <th colspan="4">
+            <!-- Render pagination for other datasets -->
+            <div class="ui right floated pagination menu">
+                  {% if page > 0 %}
+                     <!-- Calculate the prev page and use as a link -->
+                     {% set link = page-1 %}
+                     <a href="{{ url_for('admin.all_datasets', page=link) }}" class="active item">Prev</a>
+                  {% endif %}
+
+                  <!-- Page*limit must be less than total no. of datasets -->
+                  {% if page*20 < total %}
+                     <!-- Calculate the next page and use as a link -->
+                     {% set link = page+1 %}
+                     <a href="{{ url_for('admin.all_datasets', page=link) }}" class="item">Next</a>
+                  {% endif %}
+            </div>
+         </th>
+         </tr>
+      </tfoot>
+   </table>
+</div>
+{% endblock %}

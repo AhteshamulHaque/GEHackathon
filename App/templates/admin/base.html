@@ -1,0 +1,102 @@
+<html>
+<head>
+  <title>{{ title }}</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='fomantic/semantic.min.css') }}">
+  <link href="https://fonts.googleapis.com/css?family=Audiowide|Cinzel+Decorative|Geostar+Fill|Nosifer|Press+Start+2P" rel="stylesheet">
+  <script src="{{ url_for('static', filename='fomantic/jquery/jquery.js') }}"></script>
+  <script src="{{ url_for('static', filename='fomantic/semantic.min.js') }}"></script>
+
+</head>
+
+{% block style %}{% endblock %}
+
+<body>
+
+   <div class="ui sidebar vertical menu">
+      
+      <a id = "_home" href = "{{ url_for('client_auth.login') }}" class="item">
+         <i class ="home icon"></i>Client
+      </a>
+
+      <a id = "_home" href = "{{ url_for('admin.all_datasets') }}" class="item">
+         <i class ="home icon"></i>Datasets
+      </a>
+
+      <a id = "_home" href = "{{ url_for('admin.applications') }}" class="item">
+         <i class ="home icon"></i>Applications
+      </a>
+
+
+      </div>
+      <div class="pusher">
+
+         <div class="ui top menu fixed">
+            <a class="header item" id = "sidebar-toggle"><i class = "bars icon"></i></a>
+            <div class="right menu">
+
+               {% if session['admin'] %}
+                  <a class="item" href="{{ url_for('admin.home') }}"><i class="user icon"></i>{{ session['username'] }}</a>
+                  <a class="item" href="{{ url_for('admin_auth.logout') }}">Logout</a>
+               {% else %}
+                  <a class="item" href="{{ url_for('admin_auth.login') }}">Login</a>
+                  <a class="item" href="{{ url_for('admin_auth.signup') }}">Sign Up</a>
+               {% endif %}
+            </div>
+          </div>
+
+         <div id = "main-content" style = "z-index: 5000 !important; margin-top: 70px">
+            {% block content %}{% endblock %}
+         </div>
+
+         <br><br>
+      </div>
+   </div>
+
+</body>
+
+<script>
+$(document).ready(function() {
+
+  var blur = true;
+  $(".ui.sidebar").sidebar({
+
+      onChange: () => {
+
+        if(blur == true)
+            $("#main-content").css("filter","blur(12px)");
+        else
+            $("#main-content").css("filter", "blur(0)");
+
+        blur = ((blur==true) ? false : true);
+      },
+
+
+  }).sidebar("hide").sidebar("attach events", "#sidebar-toggle", "toggle");
+
+    if( localStorage.getItem("seen")  == undefined)
+    {
+        $("#sidebar-toggle").click();
+        localStorage.setItem("seen", "yes");
+    }
+
+  $('#correctness')
+  .popup({
+    inline     : true,
+    hoverable  : true,
+    position   : 'bottom right',
+    delay: {
+      show: 300,
+      hide: 300
+    }
+  });
+
+//   $(".pusher").css("background", "rgb(248, 249, 249)");
+//   $("#main-content").css("background", "rgb(248, 249, 249)");
+
+});
+</script>
+
+{% block script %} {% endblock %}
+
+</html>
