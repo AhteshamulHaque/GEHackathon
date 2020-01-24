@@ -1,0 +1,49 @@
+{% extends "client/base.html" %}
+
+{% block content %}
+
+<div class="ui container">
+
+   {% with messages = get_flashed_messages() %}
+      {% if messages %}
+         <div class="ui container">
+            <div class="ui info icon message">
+               <i class="exclamation icon"></i>
+               <div class="header">
+                  {{ messages[0] }}
+               </div>
+            </div>
+         </div>
+      {% endif %}
+   {% endwith %}
+
+   <h4 class="ui horizontal divider header">
+      Dataset Application
+   </h4>
+   <form action="{{ url_for('client.application_for_dataset', dset_id=dataset['id']) }}" class="ui form" method="POST">
+
+      <div class="field">
+        <label>Dataset Name</label>
+         <div class="field">
+            <input type="text" name="dset_name" value = "{{ dataset['name'] }}" disabled>
+         </div>
+      </div>
+
+      <div class="field">
+         <label>Title Of Application</label>
+         <div class="field">
+            <input type="text" name="title" value = "{{ dataset['name'] }}">
+         </div>
+      </div>
+
+      <div class="field">
+         <label>Purpose of Application</label>
+         <div class="field">
+            <textarea name="content" placeholder="Enter your purpose here"></textarea>
+         </div>
+      </div>
+
+      <button type = "submit" class="ui button primary">Submit Application</button>
+  </form>
+</div>
+{% endblock %}

@@ -13,21 +13,33 @@
         <table class="ui compact celled table">
             <thead>
                 <tr>
-                <th class="twelve wide">Dataset</th>
-                <th class="four wide">File Count</th>
-                <th class="four wide">Status</th>
+                <th class="ten wide">Dataset</th>
+                <th class="two wide">File Count</th>
+                <th class="two wide">Status</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- Render the dataset -->
-                <!-- id, name, description , file_count, total: sql fields -->
-                {% for data in datasets %}
-                    <tr>
-                        <td><a href="{{ url_for('client.dataset_with_id', dset_id=data['id']) }}">{{ data['name'] }}</a></td>
-                        <td>{{ data['file_count'] }}</td>
+                <!-- id, name, file_count, total: sql fields -->
+                {% for dataset in datasets %}
+                    
+                        {% if dataset['id'] in dset_status.keys() %}
+                            <td><a href="{{ url_for('client.dataset_with_id', dset_id=dataset['id']) }}">{{ dataset['name'] }}</a></td>
+                        {% else %}
+                            <td>{{ dataset['name'] }}</td>
+                        {% endif %}
+                        <td>{{ dataset['file_count'] }}</td>
 
-                        <!-- Conditionally render approved, processing, request td element -->
-                        <td></td>
+                        <!-- Conditionally render approved, processing, rejected and request td element -->
+                        {% set status = dset_status.get(dataset['id'], None) %}
+
+                        {% if status == 'processing' %}
+                            <td class="warning"><i class="sync icon"></i> Processing...</td>
+                        {% elif status == 'approved' %}
+                            <td class="positive"><i class="checkmark icon"></i> Approved</td>
+                        {% else %}
+                            <td class="blue"><a href="{{ url_for('client.application_for_dataset', dset_id=dataset['id']) }}"><span class="ui blue text">Request Access</span></a></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
 

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_login import LoginManager
 from functools import wraps
 
@@ -33,5 +33,13 @@ def create_app():
    # blueprint for client main routes
    from .client.client_main import client as client_blueprint
    app.register_blueprint(client_blueprint)
+   
+   # blueprint for test routes
+   from .test import test as test_blueprint
+   app.register_blueprint(test_blueprint)
+   
+   @app.route('/')
+   def index():
+      return redirect( url_for('client_auth.login') )
    
    return app

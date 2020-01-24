@@ -15,12 +15,13 @@
       <tbody>
          <!-- Render the dataset -->
          <!-- id, name, description , file_count, total: sql fields -->
-         {% for data in datasets %}
+         {% for file in source_files %}
             <tr>
-                  <td><a href="{{ url_for('admin.dataset_with_id', dset_id=data['id']) }}">{{ data['name'] }}</a></td>
-                  <td>{{ data['file_count'] }}</td>
+                  <td>{{ file['fname'] }}</td>
+                  <td>{{ file['size'] }} bytes</td>
+                  <td>{{ file['mimetype'] }}</td>
                   <td class="collapsing">
-                     <a href="#" class="ui button primary">Download<a>
+                     <a href="{{ url_for('admin.delete_particular_file', file_id=file['id']) }}">Delete<a>
                   </td>
             </tr>
          {% endfor %}
@@ -34,14 +35,14 @@
                   {% if page > 0 %}
                      <!-- Calculate the prev page and use as a link -->
                      {% set link = page-1 %}
-                     <a href="{{ url_for('admin.all_datasets', page=link) }}" class="active item">Prev</a>
+                     <a href="{{ url_for('admin.dataset_with_id', dset_id=dset_id, page=link) }}" class="active item">Prev</a>
                   {% endif %}
 
                   <!-- Page*limit must be less than total no. of datasets -->
                   {% if page*20 < total %}
                      <!-- Calculate the next page and use as a link -->
                      {% set link = page+1 %}
-                     <a href="{{ url_for('admin.all_datasets', page=link) }}" class="item">Next</a>
+                     <a href="{{ url_for('admin.dataset_with_id', dset_id=dset_id, page=link) }}" class="item">Next</a>
                   {% endif %}
             </div>
          </th>

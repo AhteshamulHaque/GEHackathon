@@ -1,28 +1,63 @@
 {% extends "admin/base.html" %}
 
 {% block content %}
+
 <div class="ui container">
-   <div class="ui unstackable items">
-      <div class="item">
-         <div class="image">
-            <img src="https://fomantic-ui.com/images/wireframe/image.png">
-         </div>
-         <div class="content">
-            <a class="header">Watchmen</a>
-            <div class="meta">
-               <span class="cinema">IFC</span>
-            </div>
-            <div class="description">
-               <p></p>
-            </div>
-            <div class="extra">
-               <div class="ui right floated primary button">
-               Buy tickets
-               <i class="right chevron icon"></i>
+
+   {% if applications | length == 0 %}
+      <div class="ui segment">
+         <h3>No applications</h3>
+      </div>
+   {% endif %}
+
+   {% with messages = get_flashed_messages() %}
+      {% if messages %}
+         <div class="ui container">
+            <div class="ui info icon message">
+               <i class="exclamation icon"></i>
+               <div class="header">
+                  {{ messages[0] }}
                </div>
             </div>
          </div>
+      {% endif %}
+   {% endwith %}
+
+   <div class="ui cards">
+
+      {% for application in applications %}
+         <div class="ui fluid card">
+            <div class="content">
+               <div class="header">
+                  {{ application['title'] }}
+               </div>
+               <div class="meta">
+                  {{ application['dataset_id'] }}
+               </div>
+               <div class="description">
+                  {{ application['content'] }}
+               </div>
+            </div>
+            <div class="extra content">
+               <div class="ui two buttons">
+            
+               <!-- These buttons triggers their corresponding buttons -->
+               <button onclick="document.getElementById('approve').click()" class="ui basic green button">Approve</button>
+               <button onclick="document.getElementById('reject').click()" class="ui basic red button">Reject</button>
+   
+               <!-- form to submit for approving or rejecting the application -->
+               <form action="{{ url_for('admin.applications') }}" method="POST" style="display: none">
+                  <input type="text" name="issuer_email" value="{{ application['issuer_email'] }}">
+                  <input type="text" name="dset_id" value="{{ application['dataset_id'] }}">
+                  <input id="approve" type="submit" name="approve">
+                  <input id="reject" type="submit" name="reject">
+               </form>
+               </div>
+            </div>
+         </div>
+      {% endfor %}
       </div>
-   </div>
+
 </div>
+
 {% endblock %}
