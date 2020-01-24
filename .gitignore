@@ -4,8 +4,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# test_assets included by me
+test_assets/
+
 # vscode workspace
-*.workspace
+*workspace
 
 # C extensions
 *.so
