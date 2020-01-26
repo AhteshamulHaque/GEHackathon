@@ -15,16 +15,19 @@
 
    <div class="ui sidebar vertical menu">
       
-      <a id = "_home" href = "{{ url_for('client_auth.login') }}" class="item">
+      <a href = "{{ url_for('client_auth.login') }}" class="item">
          <i class ="home icon"></i>Client
       </a>
 
-      <a id = "_home" href = "{{ url_for('admin.all_datasets') }}" class="item">
+      <a href = "{{ url_for('admin.all_datasets') }}" class="item">
          <i class ="home icon"></i>Datasets
       </a>
 
-      <a id = "_home" href = "{{ url_for('admin.applications') }}" class="item">
+      <a href = "{{ url_for('admin.applications') }}" class="item">
          <i class ="home icon"></i>Applications
+      </a>
+      <a href = "{{ url_for('admin.single_deidentification') }}" class="item">
+         <i class ="home icon"></i>Deidentify
       </a>
 
 

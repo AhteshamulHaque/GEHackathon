@@ -4,6 +4,20 @@
 
 <div class = "ui container">
     
+    {% if datasets | length == 0 %}
+
+        <div class="ui info icon message">
+            <i class="exclamation icon"></i>
+            <div class="content">
+            <div class="header">
+                No datasets
+            </div>
+            <p>Add datasets</p>
+            </div>
+        </div>
+
+    {% endif %}
+    
     <!-- Availabe datasets -->
     {% if datasets | length > 0 %}
 
@@ -28,9 +42,11 @@
                         {% else %}
                             <td>{{ dataset['name'] }}</td>
                         {% endif %}
-                        <td>{{ dataset['file_count'] }}</td>
+                        <td>{{ 10 }}</td>
 
                         <!-- Conditionally render approved, processing, rejected and request td element -->
+                        <!-- Try to get dataset status from dset_status
+                             If present means an application was submitted -->
                         {% set status = dset_status.get(dataset['id'], None) %}
 
                         {% if status == 'processing' %}

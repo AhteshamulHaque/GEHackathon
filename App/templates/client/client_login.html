@@ -5,16 +5,18 @@
 {% block content %}
 
 {% with messages = get_flashed_messages() %}
-{% if messages %}
+    {% if messages %}
     <div class="ui container">
         <div class="ui warning icon message">
             <i class="exclamation icon"></i>
-            <div class="header">
-                {{ messages[0] }}
+            <div class="content">
+                <div class="header">
+                    {{ messages[0] }}
+                </div>
             </div>
         </div>
     </div>
-{% endif %}
+    {% endif %}
 {% endwith %}
 
 <div class="ui centered card">

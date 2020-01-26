@@ -1,7 +1,14 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
-from flask_login import login_required, current_user
+from flask import (
+   Blueprint, render_template, redirect, url_for, request,
+   flash, Response
+)
+from werkzeug import secure_filename
 from .admin_auth import admin_login_required
 from ..connection import conn_pool
+from threading import Thread
+import base64
+import os, time, shutil
+import mimetypes
 
 # imported for testing purpose
 from os import urandom
@@ -29,9 +36,9 @@ def all_datasets():
    cursor = conn_pool.getCursor()
    
    # get the list of datasets with limit = 20
-   stmt = cursor.mogrify("SELECT id, name, array_length(assets, 1) as file_count FROM datasets LIMIT %(limit)s OFFSET %(offset)s", {
+   stmt = cursor.mogrify("SELECT * FROM admin_datasets LIMIT %(limit)s OFFSET %(offset)s", {
       'limit': limit,
-      'offset': offset 
+      'offset': offset
    })
    
    cursor.execute(stmt)
@@ -40,7 +47,7 @@ def all_datasets():
    datasets = cursor.fetchall()
    
    # get the total no. of datasets
-   stmt = cursor.mogrify("SELECT COUNT(*) as total FROM datasets")
+   stmt = cursor.mogrify("SELECT COUNT(*) as total FROM admin_datasets")
    cursor.execute(stmt)
    
    # fetch the count of the datasets
@@ -48,16 +55,6 @@ def all_datasets():
    
    # release cursor which releases the conn
    conn_pool.releaseCursor(cursor)
-   
-   # fake dataset
-   # datasets = [{
-   #    'id': hexlify(urandom(15)).decode('utf-8'),
-   #    'name': '2006 De-identification and Smoking Status Challenge Downloads',
-   #    'description': 'The majority of these Clinical Natural Language Processing (NLP) data sets were originally created at a former NIH-funded National Center for Biomedical Computing (NCBC) known as i2b2: Informatics for Integrating Biology and the Bedside.',
-   #    'file_count': 10
-   # }]
-   
-   # total = 50
    
    return render_template(
       'admin/admin_dataset.html', title="Datasets",
@@ -67,74 +64,43 @@ def all_datasets():
 
 # route for a particular dataset i.e it shows files
 # for a particular dataset using pagination
-@admin.route('/datasets/<dset_id>')
+# TODO - needs to be modified
+@admin.route('/datasets/<asset_type>/<dset_id>')
 @admin_login_required
-def dataset_with_id(dset_id):
+def dataset_with_id(asset_type, dset_id):
    
-   # show files using pagination
-   page = int(request.args.get('page', 0)) # offset for the files in the database
-   limit = 20 # no. of dataset
-
-   # pagination is implemented using ARRAY SLICING over assets `datatype` field
-   # in `dataset` TABLE   
-   start = page*limit
-   end = start+limit
-   
+   # `asset type` defines if the document is source or deidentified
    # acquire cursor
    cursor = conn_pool.getCursor()
-
-   # due to array slicing problem the below statement is not mogrified
-   stmt = "SELECT assets["+str(start)+":"+str(end)+"] FROM datasets WHERE id='%s'"%(dset_id)   
+   
+   # get dataset metadata
+   stmt = cursor.mogrify("SELECT * FROM datasets WHERE id=%s", (dset_id,))
    cursor.execute(stmt)
-   
-   # the data is returned as [[[id, id, .... ]]] hence the below line
-   files_id_array = cursor.fetchone()[0] # here files is an array of ids
-   
-   # convert files to postgresql array
-   files_id_array = str(files_id_array)
-   files_id_array = files_id_array.replace('[', '{').replace(']', '}').replace("'", '').replace('"', '') # postgresql array
-   
-   # get details of individual source files using file_id_array
-   stmt = cursor.mogrify("SELECT id, fname, octet_length(asset_data) as size, mimetype FROM s_assets WHERE id=ANY(%s)", (files_id_array,) )
-   
-   cursor.execute(stmt)
-   source_files = cursor.fetchall()
-   
-   # get details of individual deidentified files using file_id_array
-   stmt = cursor.mogrify("SELECT id FROM d_assets WHERE id=ANY(%s)", (files_id_array,) )
-   cursor.execute(stmt)
-   deientified_files = cursor.fetchall()
-
-   # get total no of files related to this dataset
-   stmt = cursor.mogrify("SELECT array_length(assets, 1) AS total FROM datasets WHERE id=%s", (dset_id, ))
-   cursor.execute(stmt)
-   
-   total = cursor.fetchone()['total']
+   dataset = cursor.fetchone()
    
    # release cursor which releases the conn
    conn_pool.releaseCursor(cursor)
-   
-   # fake dataset
-   # files = [{
-   #    'id': hexlify(urandom(15)).decode('utf-8'),
-   #    'fname': 'Some random file name',
-   #    'mimetype':'image/png',
-   #    'tags': ['disease1', 'disease2', 'disease2']
-   # }]
-   
-   # dset_id is used for prev and next links
-   return render_template(
-      'admin/admin_dataset_files.html', title="Datasets Files",
-      dset_id=dset_id, source_files=source_files, page=page, total=total,
-      deientified_files=deientified_files
-   )
-   
 
-# this route is downloading a particular file
-@admin.route('/file/<file_id>')
-@admin_login_required
-def delete_particular_file(file_id):
-   return "Delete %s"%file_id
+   if asset_type == 'src':
+      filepath = os.path.join('source_assets', dataset['filename'])
+   else:
+      filepath = os.path.join('deidentified_assets', dataset['filename'])
+   
+   
+   # send the zip file
+   return Response(
+      open(filepath, 'rb'),
+      headers={
+         "Pragma": "public",
+         "Cache-Control": "must-revalidate, post-check=0, pre-check=0",
+         "Cache-Control": "public",
+         "Content-Description": "File Transfer",
+         "Content-type": "application/octet-stream",
+         "Content-Transfer-Encoding": "binary",
+         # "Content-Length: ".filesize($filepath.$filename)),
+         "Content-Disposition": "attachment; filename=%s;" % dataset['filename']
+      }
+   )
    
 
 # application logic
@@ -181,3 +147,117 @@ def applications():
       flash(msg)
       
       return redirect( url_for('admin.applications') )
+   
+
+# route to check single deidentification by the admin
+@admin.route('/single', methods=['GET', 'POST'])
+@admin_login_required
+def single_deidentification():
+   
+   if request.method == 'GET':
+      return render_template('admin/deidentify.html', title="Deidentify")
+   
+   
+   elif request.method == 'POST':
+      
+      file = request.files['src_file']
+      mime = mimetypes.MimeTypes()
+      
+      mimetype = mime.guess_type(file.filename)[0]
+      
+      # deidentify according to filetype
+      if 'image' in mimetype:
+         print("image passed")
+         result = f'data:{mimetype};base64,'
+         
+         result += (base64.b64encode( file.stream.read() )).decode('utf-8')
+         
+         print(result[:40])
+      elif 'audio' in mimetype:
+         print("audio passed")
+         result = "Some text"
+      else:
+         print("text passed")
+         result = file.stream.read().decode('utf-8')
+      
+      return render_template('admin/deidentify.html',
+         title="Deidentify", result=result, mimetype=mimetype)
+      
+      
+
+# upload logic for admin datasets upload
+@admin.route('/upload', methods=['POST'])
+@admin_login_required
+def upload():
+   
+   # get the file from the form
+   file = request.files['zipfile']
+   
+   # generating filepath
+   # gives unidentified error while saving by any other way
+   filepath = os.path.join('source_assets', secure_filename(file.filename))
+   
+   # save the files in source_assets
+   file.save( filepath )
+   
+   # acquire the cursor and connection
+   cursor = conn_pool.getCursor()  
+   
+   # generate a file id
+   file_props = {
+      'id': hexlify(os.urandom(15)).decode('utf-8'),
+      'name': request.form['dataset_name'],
+      'filename': file.filename,
+      'filepath': filepath,
+      'status': 0
+   }
+   
+   # insert processing entry for the dataset_asset
+   stmt = cursor.mogrify("INSERT INTO admin_datasets VALUES(%(id)s, %(name)s, %(filename)s, %(status)s)", file_props)
+
+   print(stmt)
+   cursor.execute(stmt)
+   
+   # schedule the deidentification of data
+   th = Thread(target=deidentify_datasets, args=(file_props, ))
+   th.start()
+   
+   # release the cursor and connection
+   conn_pool.releaseCursor(cursor)
+   
+   return redirect( url_for('admin.all_datasets') )
+
+
+def deidentify_datasets(file_props):
+   
+   # deidentify datasets here
+   time.sleep(5)
+   
+   # ...... deidentification in progress
+   
+   # save file to deidentified_assets directory
+   shutil.copyfile(
+      file_props['filepath'],
+      os.path.join('deidentified_assets', file_props['filename'])
+   )
+   
+   # acquire the cursor and connection
+   cursor = conn_pool.getCursor()
+   
+   # update the datasets for the admin
+   stmt = cursor.mogrify("UPDATE admin_datasets SET upload_status=%(status)s WHERE id=%(id)s", {
+      'id': file_props['id'],
+      'status': 1
+   })
+   cursor.execute(stmt)
+   
+   # update the datasets for the client
+   stmt = cursor.mogrify("INSERT INTO datasets VALUES(%(id)s, %(name)s, %(filename)s)", {
+      'id': file_props['id'],
+      'name': file_props['name'],
+      'filename': file_props['filename']
+   })
+   cursor.execute(stmt)
+   
+   # release the cursor and connection
+   conn_pool.releaseCursor(cursor)

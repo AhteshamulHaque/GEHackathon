@@ -13,9 +13,11 @@
 CREATE TABLE IF NOT EXISTS users (
    email VARCHAR(30) PRIMARY KEY NOT NULL,
    username VARCHAR(20) NOT NULL UNIQUE,
-   passwd VARCHAR(100),
-   datasets_access VARCHAR[] -- useless datatype declaration
+   passwd VARCHAR(100)
 );
+
+-- INSERT AN DEFAULT USER with password nile
+INSERT INTO users VALUES('example@gmail.com', 'test_user', 'sha256$HWi4ve2L$de69136fddcf73c77832ec5eb76b0cbf7b3cd2792171e0be9cf2cbd1d5dacf86');
 
 -- CREATE TABLE `admin`
 CREATE TABLE IF NOT EXISTS admin (
@@ -26,30 +28,19 @@ CREATE TABLE IF NOT EXISTS admin (
 -- INSERT AN DEFAULT ADMIN with password admin
 INSERT INTO admin VALUES('admin', 'sha256$ptkuwZEr$7ecee462fc41eeafdc1459fc0e62987624b2932afecfaab455e67573c2aea07d');
 
--- CREATE TABLE `datasets` ( datasets will have reference to `s_assets` and `d_assets` )
+-- datasets accessed by a client
 CREATE TABLE IF NOT EXISTS datasets (
    id VARCHAR(30) PRIMARY KEY NOT NULL,
    name TEXT,
-   assets VARCHAR[] -- id's of the `s_assets` TABLE
+   filename TEXT
 );
 
--- CREATE s_assets TABLE [ source files -> (text files, audio files, images) ]
--- all metadata for an asset are stores in `source_assets`
--- and the id is referenced from `d_assets`
-CREATE TABLE IF NOT EXISTS s_assets (
+-- dataset from which admin reads
+CREATE TABLE IF NOT EXISTS admin_datasets (
    id VARCHAR(30) PRIMARY KEY NOT NULL,
-   fname TEXT,
-   asset_data BYTEA,
-   mimetype VARCHAR(50),
-   tags VARCHAR[]
-);
-
--- CREATE d_assets TABLE ( source files -> text files, audio files, images)
--- no metadata must be referenced using `source_assets`
-CREATE TABLE IF NOT EXISTS d_assets (
-   id VARCHAR(30) PRIMARY KEY NOT NULL,
-   asset_data BYTEA,
-   FOREIGN KEY (id) REFERENCES s_assets(id)
+   name TEXT,
+   filename TEXT,
+   upload_status INTEGER
 );
 
 -- CREATE applications TABLE ( for user application for requesting of different data )
@@ -57,7 +48,6 @@ CREATE TABLE IF NOT EXISTS applications (
    id VARCHAR(30) PRIMARY KEY NOT NULL,
    title VARCHAR(100),
    content TEXT,           -- purpose of application
-   tags VARCHAR[],         -- useless data type 
 
    -- status can be ( approved, rejected, processing )
    -- processing -> is submitted but not seen by admin
@@ -71,10 +61,10 @@ CREATE TABLE IF NOT EXISTS applications (
 
 
 ------------------------------- TEST DATABASE ----------------------------------
-\c test;
+-- \c test;
 
-CREATE TABLE IF NOT EXISTS s_assets (
-   fname TEXT,
-   asset_data BYTEA,
-   mimetype VARCHAR(50)
-);
+-- CREATE TABLE IF NOT EXISTS s_assets (
+--    id VARCHAR(30) PRIMARY KEY,
+--    name TEXT,
+--    file_url TEXT
+-- );

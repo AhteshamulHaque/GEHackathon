@@ -23,29 +23,22 @@
     <h4 class="ui horizontal divider header">
         Dataset Information
     </h4>
-    <form action="" class="ui form" method = "POST">
+    <form action="{{ url_for('admin.upload') }}" class="ui form" enctype="multipart/form-data" method = "POST">
         
         <div class="field">
           <label>Name</label>
             <div class="field">
-                <input type="text" name="dataset_name" placeholder="Dataset Name">
-            </div>
-        </div>
-
-        <div class="field">
-            <label>Description</label>
-            <div class="field">
-                <textarea name="dataset_desc" placeholder="Enter the description of the dataset"></textarea>
+                <input type="text" name="dataset_name" placeholder="Dataset Name" required>
             </div>
         </div>
 
         <div class="field">
             <div class="field">
-                <input type="file" name="zipfile">
+                <input type="file" name="zipfile" required>
             </div>
         </div>
 
-        <div class="ui button primary">Upload Dataset</div>
+        <button type="submit" class="ui button primary">Upload Dataset</button>
     </form>
     
     <!-- Availabe datasets -->
@@ -57,8 +50,10 @@
         <table class="ui compact celled table">
             <thead>
                 <tr>
-                <th class="twelve wide">Dataset</th>
-                <th class="four wide">File Count</th>
+                <th class="eight wide">Dataset</th>
+                <th class="two wide">Source</th>
+                <th class="two wide">Deidentified</th>
+                <th class="four wide">Upload Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,8 +61,19 @@
                 <!-- id, name, description , file_count, total: sql fields -->
                 {% for data in datasets %}
                     <tr>
-                        <td><a href="{{ url_for('admin.dataset_with_id', dset_id=data['id']) }}">{{ data['name'] }}</a></td>
-                        <td>{{ data['file_count'] }}</td>
+
+                        {%if data['upload_status'] == 1 %}
+                            <td>{{ data['name'] }}</td>
+                            <td><a href="{{ url_for('admin.dataset_with_id', asset_type='src', dset_id=data['id']) }}">Download</a></td>
+                            <td><a href="{{ url_for('admin.dataset_with_id', asset_type='dfd', dset_id=data['id']) }}">Download</a></td>
+                            <td class="positive"><i class="checkmark icon"></i> Uploaded</td>
+                        {% else %}
+                            <td>{{ data['name'] }}</td>
+                            <td class="warning"><i class="sync icon"></i> Processing...</td>
+                            <td class="warning"><i class="sync icon"></i> Processing...</td>
+                            <td class="warning"><i class="sync icon"></i> Processing...</td>
+                        {% endif %}
+
                     </tr>
                 {% endfor %}
 

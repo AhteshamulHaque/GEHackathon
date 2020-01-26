@@ -29,12 +29,9 @@ def login():
    cursor = conn_pool.getCursor()
    
    stmt = cursor.mogrify("SELECT * FROM users WHERE email=%(email)s", {'email': email })
-   print(stmt)
    
    cursor.execute(stmt)
    result = cursor.fetchone()
-
-   print(result)
    
    # check if user actually exists
    # take the user supplied password, hash it, and compare it to the hashed password in database
@@ -65,14 +62,16 @@ def signup():
    # acquire the cursor and conn
    cursor = conn_pool.getCursor()
    
-   stmt = cursor.mogrify("SELECT email FROM users WHERE email=%(email)s", { 'email': email })
-   print(stmt)
+   stmt = cursor.mogrify("SELECT email FROM users WHERE email=%(email)s OR username=%(username)s", {
+      'email': email,
+      'username': username
+   })
    
    cursor.execute(stmt)
    result = cursor.fetchone()
 
    if result: # if a user is found, we want to redirect back to signup page so user can try again
-      flash('Email address already exists')
+      flash('Email address or username already exists')
       return redirect(url_for('client_auth.signup_page'))
 
    # create new user with the form data. Hash the password so plaintext version isn't saved.
@@ -82,7 +81,6 @@ def signup():
       'username': username,
       'passwd': generate_password_hash(password, method='sha256')
    })
-   print(stmt)
    
    cursor.execute(stmt)
    

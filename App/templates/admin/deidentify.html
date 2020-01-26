@@ -1,0 +1,37 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="ui container">
+   <h4 class="ui horizontal divider header">
+      Deidentification
+  </h4>
+
+  <form action="{{ url_for('admin.single_deidentification') }}" class="ui form" enctype="multipart/form-data" method = "POST">        
+      <div class="field">
+      <label>Input File</label>
+         <div class="field">
+            <input type="file" name="src_file" required>
+         </div>
+      </div>
+
+      <button type="submit" class="ui button primary">Deidentify</button>
+   </form>
+
+   {% if mimetype %}
+
+      <h4 class="ui horizontal divider header">
+         Deidentification Result
+      </h4>
+
+      {% if 'image' in mimetype %}
+         <img class="ui fluid image" src = "{{ result }}">
+      {% else %}
+         <div class="ui segment">
+            <pre>
+               {{ result }}
+            </pre>
+         </div>
+      {% endif %}
+   {% endif %}
+</div>
+{% endblock %}

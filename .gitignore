@@ -6,6 +6,8 @@ __pycache__/
 
 # test_assets included by me
 test_assets/
+source_assets/
+deidentified_assets/
 
 # vscode workspace
 *workspace
