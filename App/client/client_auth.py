@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from ..connection import conn_pool
+from connection import conn_pool
 
 from flask_login import login_user, login_required, logout_user, current_user
-from ..model import User
+from model import User
 
 client_auth = Blueprint('client_auth', __name__, url_prefix='/c')
 

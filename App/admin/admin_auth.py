@@ -4,7 +4,7 @@ from flask import (
 )
 
 from werkzeug.security import generate_password_hash, check_password_hash
-from ..connection import conn_pool
+from connection import conn_pool
 from functools import wraps
 
 admin_auth = Blueprint('admin_auth', __name__, url_prefix='/a')

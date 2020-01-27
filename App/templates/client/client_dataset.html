@@ -30,19 +30,16 @@
                 <th class="ten wide">Dataset</th>
                 <th class="two wide">File Count</th>
                 <th class="two wide">Status</th>
+                <th class="two wide">Download</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- Render the dataset -->
                 <!-- id, name, file_count, total: sql fields -->
                 {% for dataset in datasets %}
-                    
-                        {% if dataset['id'] in dset_status.keys() %}
-                            <td><a href="{{ url_for('client.dataset_with_id', dset_id=dataset['id']) }}">{{ dataset['name'] }}</a></td>
-                        {% else %}
-                            <td>{{ dataset['name'] }}</td>
-                        {% endif %}
-                        <td>{{ 10 }}</td>
+
+                        <td>{{ dataset['name'] }}</td>
+                        <td>{{ dataset['filecount'] }}</td>
 
                         <!-- Conditionally render approved, processing, rejected and request td element -->
                         <!-- Try to get dataset status from dset_status
@@ -56,6 +53,13 @@
                         {% else %}
                             <td class="blue"><a href="{{ url_for('client.application_for_dataset', dset_id=dataset['id']) }}"><span class="ui blue text">Request Access</span></a></td>
                         {% endif %}
+
+                        {% if dataset['id'] in dset_status.keys() %}
+                            <td><a href="{{ url_for('client.dataset_with_id', dset_id=dataset['id']) }}">Download</a></td>
+                        {% else %}
+                            <td>Not Available</td>
+                        {% endif %}
+
                     </tr>
                 {% endfor %}
 

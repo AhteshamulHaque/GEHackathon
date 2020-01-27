@@ -3,7 +3,7 @@ from flask import (
    request, flash, Response, jsonify, send_from_directory
 )
 from flask_login import login_required, current_user
-from ..connection import conn_pool
+from connection import conn_pool
 
 # test imports
 import os
@@ -32,7 +32,7 @@ def all_datasets():
    cursor = conn_pool.getCursor()
    
    # get the list of datasets with limit = 20
-   stmt = cursor.mogrify("SELECT id, name, filename FROM datasets LIMIT %(limit)s OFFSET %(offset)s", {
+   stmt = cursor.mogrify("SELECT * FROM datasets LIMIT %(limit)s OFFSET %(offset)s", {
       'limit': limit,
       'offset': offset 
    })

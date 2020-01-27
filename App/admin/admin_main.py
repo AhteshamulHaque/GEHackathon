@@ -2,13 +2,16 @@ from flask import (
    Blueprint, render_template, redirect, url_for, request,
    flash, Response
 )
-from werkzeug import secure_filename
-from .admin_auth import admin_login_required
-from ..connection import conn_pool
 from threading import Thread
-import base64
-import os, time, shutil
-import mimetypes
+import base64, os, time, mimetypes
+from werkzeug import secure_filename
+
+# app imports
+from admin.admin_auth import admin_login_required
+from connection import conn_pool
+
+# deidentification tool import
+from deidentifier.deidentify_main import deidentify_zipfile
 
 # imported for testing purpose
 from os import urandom
@@ -194,32 +197,35 @@ def upload():
    file = request.files['zipfile']
    
    # generating filepath
+   
    # gives unidentified error while saving by any other way
-   filepath = os.path.join('source_assets', secure_filename(file.filename))
+   src_zip_path = os.path.join('source_assets', secure_filename(file.filename))
+   dest_zip_path = os.path.join('deidentified_assets', secure_filename(file.filename))
    
    # save the files in source_assets
-   file.save( filepath )
+   file.save( src_zip_path )
    
    # acquire the cursor and connection
    cursor = conn_pool.getCursor()  
    
    # generate a file id
-   file_props = {
+   zip_info = {
       'id': hexlify(os.urandom(15)).decode('utf-8'),
       'name': request.form['dataset_name'],
       'filename': file.filename,
-      'filepath': filepath,
+      'src_zip_path': src_zip_path,
+      'dest_zip_path': dest_zip_path,
       'status': 0
    }
    
    # insert processing entry for the dataset_asset
-   stmt = cursor.mogrify("INSERT INTO admin_datasets VALUES(%(id)s, %(name)s, %(filename)s, %(status)s)", file_props)
+   stmt = cursor.mogrify("INSERT INTO admin_datasets VALUES(%(id)s, %(name)s, %(filename)s, %(status)s)", zip_info)
 
    print(stmt)
    cursor.execute(stmt)
    
    # schedule the deidentification of data
-   th = Thread(target=deidentify_datasets, args=(file_props, ))
+   th = Thread( target=deidentify_datasets, args=(zip_info,) )
    th.start()
    
    # release the cursor and connection
@@ -228,34 +234,36 @@ def upload():
    return redirect( url_for('admin.all_datasets') )
 
 
-def deidentify_datasets(file_props):
-   
-   # deidentify datasets here
-   time.sleep(5)
+def deidentify_datasets(zip_info):
    
    # ...... deidentification in progress
-   
-   # save file to deidentified_assets directory
-   shutil.copyfile(
-      file_props['filepath'],
-      os.path.join('deidentified_assets', file_props['filename'])
-   )
+   # after successfull deidentification it saves the deidentified files also
+   # this will be done automatically after deidentification
+   file_count = deidentify_zipfile(zip_info['src_zip_path'], zip_info['dest_zip_path'] )
    
    # acquire the cursor and connection
    cursor = conn_pool.getCursor()
    
    # update the datasets for the admin
    stmt = cursor.mogrify("UPDATE admin_datasets SET upload_status=%(status)s WHERE id=%(id)s", {
-      'id': file_props['id'],
+      'id': zip_info['id'],
       'status': 1
    })
    cursor.execute(stmt)
    
-   # update the datasets for the client
-   stmt = cursor.mogrify("INSERT INTO datasets VALUES(%(id)s, %(name)s, %(filename)s)", {
-      'id': file_props['id'],
-      'name': file_props['name'],
-      'filename': file_props['filename']
+   # update filecount for the admin
+   stmt = cursor.mogrify("UPDATE admin_datasets SET filecount=%(filecount)s  WHERE id=%(id)s", {
+      'id': zip_info['id'],
+      'filecount': file_count
+   })
+   cursor.execute(stmt)
+   
+   # insert the datasets for the client
+   stmt = cursor.mogrify("INSERT INTO datasets VALUES(%(id)s, %(name)s, %(filename)s, %(filecount)s)", {
+      'id': zip_info['id'],
+      'name': zip_info['name'],
+      'filename': zip_info['filename'],
+      'filecount': file_count
    })
    cursor.execute(stmt)
    

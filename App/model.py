@@ -1,4 +1,4 @@
-from .connection import conn_pool
+from connection import conn_pool
 from flask_login import UserMixin
 
 #***************************** USER CLASS *******************************

@@ -32,7 +32,8 @@ INSERT INTO admin VALUES('admin', 'sha256$ptkuwZEr$7ecee462fc41eeafdc1459fc0e629
 CREATE TABLE IF NOT EXISTS datasets (
    id VARCHAR(30) PRIMARY KEY NOT NULL,
    name TEXT,
-   filename TEXT
+   filename TEXT,
+   filecount INTEGER DEFAULT 0
 );
 
 -- dataset from which admin reads
@@ -40,6 +41,7 @@ CREATE TABLE IF NOT EXISTS admin_datasets (
    id VARCHAR(30) PRIMARY KEY NOT NULL,
    name TEXT,
    filename TEXT,
+   filecount INTEGER,
    upload_status INTEGER
 );
 

@@ -50,10 +50,11 @@
         <table class="ui compact celled table">
             <thead>
                 <tr>
-                <th class="eight wide">Dataset</th>
+                <th class="seven wide">Dataset</th>
                 <th class="two wide">Source</th>
                 <th class="two wide">Deidentified</th>
-                <th class="four wide">Upload Status</th>
+                <th class="two wide">File count</th>
+                <th class="three wide">Upload Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,11 +67,13 @@
                             <td>{{ data['name'] }}</td>
                             <td><a href="{{ url_for('admin.dataset_with_id', asset_type='src', dset_id=data['id']) }}">Download</a></td>
                             <td><a href="{{ url_for('admin.dataset_with_id', asset_type='dfd', dset_id=data['id']) }}">Download</a></td>
+                            <td>{{ data['filecount'] }}</td>
                             <td class="positive"><i class="checkmark icon"></i> Uploaded</td>
                         {% else %}
                             <td>{{ data['name'] }}</td>
                             <td class="warning"><i class="sync icon"></i> Processing...</td>
                             <td class="warning"><i class="sync icon"></i> Processing...</td>
+                            <td>0</td>
                             <td class="warning"><i class="sync icon"></i> Processing...</td>
                         {% endif %}
 
@@ -80,7 +83,7 @@
             </tbody>
             <tfoot class="full-width">
                 <tr>
-                <th colspan="4">
+                <th colspan="16">
                     <!-- Render pagination for other datasets -->
                     <div class="ui right floated pagination menu">
                         {% if page > 0 %}

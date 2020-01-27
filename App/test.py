@@ -1,8 +1,8 @@
 from flask import Blueprint, redirect, url_for
-from .connection import conn_pool
+from connection import conn_pool
 import os, shutil
 from binascii import hexlify
-from .connection import conn_pool
+from connection import conn_pool
 
 test = Blueprint('test', __name__, url_prefix='/t')
 
