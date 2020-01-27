@@ -197,7 +197,6 @@ def upload():
    file = request.files['zipfile']
    
    # generating filepath
-   
    # gives unidentified error while saving by any other way
    src_zip_path = os.path.join('source_assets', secure_filename(file.filename))
    dest_zip_path = os.path.join('deidentified_assets', secure_filename(file.filename))
