@@ -116,7 +116,7 @@ def deidentifier(xml_content,nlp,nlp3,choice):
     # print(mail_list)
     ip_list=regex_extractor(r"\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b",doc,st)    
   #  print(st)
-    aadhar_list=regex_extractor(r"(\d{4}(\s|\-)\d{4}(\s|\-)\d{4})",doc,st)
+    # aadhar_list=regex_extractor(r"(\d{4}(\s|\-)\d{4}(\s|\-)\d{4})",doc,st)
     
     ## replacing all the matched pattern to protect the information.
     
@@ -124,8 +124,8 @@ def deidentifier(xml_content,nlp,nlp3,choice):
       st=st[:a[1]]+'X'*(a[2]-a[1])+st[a[2]:]
     for a in mail_list:
       st=st[:a[1]]+'X'*(a[2]-a[1])+st[a[2]:] 
-    for a in aadhar_list:
-      st=st[:a[1]]+'X'*(a[2]-a[1])+st[a[2]:]
+    # for a in aadhar_list:
+    #   st=st[:a[1]]+'X'*(a[2]-a[1])+st[a[2]:]
     
    
 
@@ -187,12 +187,17 @@ def deidentifier(xml_content,nlp,nlp3,choice):
     
   #  print("6")
     doc=nlp(st)
+    
+    aadhar_list=regex_extractor(r"(\d{4}(\s|\-)\d{4}(\s|\-)\d{4})",doc,st)
+    for a in aadhar_list:
+      st=st[:a[1]]+'X'*(a[2]-a[1])+st[a[2]:]
+    
     voter_id_list=regex_extractor(r"\b[A-Z0-9]{10}\b",doc,st)
     # print(voter_id_list)
     license_number=regex_extractor(r"\b[A-Z]{2}\d{2}(|-)\d{4}(|-)\d{7}\b",doc,st)
     # print(license_number)
     for a in voter_id_list:
-      if(a[0].count('X')<3):
+      if(a[0].count('X')<3 and any(i.isdigit() for i in a[0])):
         st=st[:a[1]]+'X'*(a[2]-a[1])+st[a[2]:]
     for a in license_number:
       st=st[:a[1]]+'X'*(a[2]-a[1])+st[a[2]:]
@@ -595,7 +600,7 @@ def master(xml_content,choice=2):
                      #   if not wordnet.synsets(str(spell_word)):  
                           #  print(spell_word)
                     # else: 
-                        print(token)
+                        # print(token)
                         index=st.find(str(token))
                         # print(index)
                         if(index!=0 and index+len(str(token))!=len(st)):
@@ -607,6 +612,17 @@ def master(xml_content,choice=2):
     
     ## final processed string,dictionay and shift is returned.
     return(st,dic,shift)
+
+def list_returner(st):
+    a=[]
+    doc=nlp(st)
+    for token in doc:
+        if((token.tag_=="NN" or token.tag_=='NNP') and 'XX' not in str(token)):
+              if not wordnet.synsets(str(token)):
+                #print(token)
+                if(str(token).lower() not in data and str(token).lower() not in data2 and str(token).lower() not in abbr_list and sum([True if i in str(token) else False for i in result])==0 and len(str(token))>2):
+                   a.append(token)
+    return(a)     
 
 ## input the name of text file to be processed.
 # FUNCTION - TYPE OF OUTPUT EXPECTED

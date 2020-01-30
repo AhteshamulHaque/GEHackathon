@@ -2,17 +2,25 @@ import zipfile
 from time import sleep
 import mimetypes
 import numpy, cv2, os
+import timeit
+from scipy.io.wavfile import write
+
+# import ml/ai models for text deidentification
+from deidentifier.text_deidentifier import master, list_returner
+
+# import ml/ai models for image deidentification
 from deidentifier.face_redact import main
 from deidentifier.burnt_text_redact import main as _main
 
-# import ml/ai models here
-from deidentifier.text_deidentifier import master
+# import ml/ai models for audio deidentification
+from deidentifier.speech_model.SpeechToText import speech_to_text, get_deidentified_file
 
 def deidentify_zipfile(src_filename, dest_filename):
    
    # file count
    count = 0
    
+   start = timeit.default_timer()
    # open both reading and writing zipfile
    with zipfile.ZipFile(src_filename, 'r') as zpin, zipfile.ZipFile(dest_filename, 'w') as zpout:
       
@@ -21,6 +29,7 @@ def deidentify_zipfile(src_filename, dest_filename):
       count = len(zpin.namelist())
       
       mime = mimetypes.MimeTypes()
+      
       # add support for dicom images
       mime.add_type('application/dicom', '.dcm')
       
@@ -28,10 +37,15 @@ def deidentify_zipfile(src_filename, dest_filename):
          
          # get the file type
          filetype = mime.guess_type(file)[0]
+         print(file, filetype)
+         
+         # extract the file
+         zpin.extract(file)
          
          ##################### Model for text ###########################
          if 'text' in filetype:
             print("Deidentifying text file %s"%file)
+            
             # read zipinfo from the file
             info = zipfile.ZipInfo(file)
             
@@ -65,9 +79,7 @@ def deidentify_zipfile(src_filename, dest_filename):
                
                # convert numpy array to image
                imge = cv2.imdecode(npimg, cv2.IMREAD_GRAYSCALE)
-               
-               new_img = _main(img, imge)
-               
+               new_img = _main(img)
                
             cv2.imwrite('deidentified_'+file, new_img)
             
@@ -79,9 +91,27 @@ def deidentify_zipfile(src_filename, dest_filename):
             
          ####################### Else the filetype is audio ##########################
          else:
+            file_obj = zpin.open(file)
             print("Deidentifying audio file %s"%file)
-            pass
-         
+            
+            # pass to audio model
+            # Returns text data
+            transcript, timestamp = speech_to_text(file_obj)
+            
+            a = list_returner(transcript)   
+
+            array = get_deidentified_file(file, timestamp, a)
+            file_obj.close()
+            
+            write('deidentified_'+file, rate=16000, data=array)
+            zpout.write('deidentified_'+file, file)
+            os.remove('deidentified_'+file)
+        
+         os.remove(file)
+             
          print("Success...")
-         
+      
+   print("Done...")
+   print("Time taken {:.2f}".format( (timeit.default_timer()-start)/60 ) )
+   
    return count
