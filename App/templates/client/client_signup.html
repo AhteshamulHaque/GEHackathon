@@ -1,0 +1,39 @@
+<!-- templates/signup.html -->
+
+{% extends "client/base.html" %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="ui warning icon message">
+        <i class="exclamation icon"></i>
+        <div class="content">
+            <div class="header">
+                {{ messages[0] }}. Go to <a href="{{ url_for('client_auth.login') }}">Login page</a>.
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endwith %}
+
+<div class="ui centered card">
+    <div class="content">
+        <h4 class="ui horizontal divider header">Researcher Signup</h4>
+        <form action="{{ url_for('client_auth.signup') }}" class="ui form" method="POST">
+            <div class="field">
+                <input type="text" name="email" placeholder="Your Email" required>
+            </div>
+            <div class="field">
+                <input type="text" name="username" placeholder="Your Username" required>
+            </div>
+            <div class="field">
+                <input type="text" name="password" placeholder="Your Password" required>
+            </div>
+
+            <button class="ui fluid green button" type="submit">Sign Up</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

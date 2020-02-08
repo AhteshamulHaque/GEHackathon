@@ -1,0 +1,33 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="ui container">
+        <div class="ui warning icon message">
+            <i class="exclamation icon"></i>
+            <div class="header">
+                {{ messages[0] }}
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endwith %}
+
+<div class="ui centered card">
+    <div class="content">
+        <h4 class="ui horizontal divider header">Administrator Login</h4>
+        <form action="{{ url_for('admin_auth.login') }}" class="ui form" method="POST">
+            <div class="field">
+                <input type="text" name="username" placeholder="Your Email" required>
+            </div>
+            <div class="field">
+                <input type="password" name="password" placeholder="Your Password" required>
+            </div>
+
+            <button class="ui fluid green button" type="submit">Login</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

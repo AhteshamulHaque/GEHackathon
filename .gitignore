@@ -4,6 +4,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# test_assets included by me
+App/source_assets/
+App/deidentified_assets/
+
+# vscode workspace
+*workspace
+
 # C extensions
 *.so
 

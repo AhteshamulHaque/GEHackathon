@@ -1,0 +1,38 @@
+{% extends "client/base.html" %}
+
+{% block content %}
+
+<div class="ui container">
+
+   {% if applications | length == 0 %}
+      <div class="ui segment">
+         <h3>No applications</h3>
+      </div>
+   {% endif %}
+
+   {% for application in applications %}
+      <div class="ui fluid card">
+         <div class="content">
+            <div class="header">{{ application['title'] }}</div>
+            <div class="meta"><a href="{{ url_for('client.dataset_with_id', dset_id=application['dataset_id']) }}">{{ application['dataset_id'] }}</a></div>
+            <div class="description">
+               <p>{{ application['content'] }}</p>
+            </div>
+         </div>
+         <div class="extra content">
+            <div class="right floated">
+               {% if application['status'] == 'processing' %}
+                     <span class="ui yellow text"><i class="sync icon"></i> Processing...</span>
+               {% elif application['status'] == 'approved' %}
+                     <span class="ui green text"><i class="checkmark icon"></i> Approved</span>
+               {% elif application['status'] == 'rejected' %}
+                     <span class="ui red text"><i class="attention icon"></i> Rejected</span>
+               {% endif %}
+            </div>
+         </div>
+      </div>
+   {% endfor %}
+   
+</div>
+
+{% endblock %}
