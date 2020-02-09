@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS datasets (
    id VARCHAR(30) PRIMARY KEY NOT NULL,
    name TEXT,
    filename TEXT,
+   filehash VARCHAR(50),
    filecount INTEGER DEFAULT 0
 );
 
@@ -41,6 +42,7 @@ CREATE TABLE IF NOT EXISTS admin_datasets (
    id VARCHAR(30) PRIMARY KEY NOT NULL,
    name TEXT,
    filename TEXT,
+   filehash VARCHAR(50),
    filecount INTEGER,
    upload_status INTEGER
 );
@@ -56,7 +58,7 @@ CREATE TABLE IF NOT EXISTS applications (
    status VARCHAR(10),     -- it tells if application is considered or not
    issuer_email VARCHAR(30),
    dataset_id VARCHAR(30),
-
+   filehash VARCHAR(50),
    FOREIGN KEY (issuer_email) REFERENCES users(email),
    FOREIGN KEY (dataset_id) REFERENCES datasets(id)
 );

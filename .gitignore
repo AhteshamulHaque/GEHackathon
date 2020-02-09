@@ -7,6 +7,7 @@ __pycache__/
 # test_assets included by me
 App/source_assets/
 App/deidentified_assets/
+App/deidentifier/speech_model/deepspeech-0.6.1-models
 
 # vscode workspace
 *workspace
