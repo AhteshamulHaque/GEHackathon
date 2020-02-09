@@ -52,7 +52,7 @@ trie = dirPath + "deepspeech-0.6.1-models/trie"
 # audio_file = dirPath + pathToAudioFile
 # audio_deid = dirPath + newpath
 
-def speech_to_text(file_obj):
+def speech_to_text(audio_file):
     
     sample_rate = 16000
     BEAM_WIDTH = 500
@@ -63,7 +63,7 @@ def speech_to_text(file_obj):
     ds.enableDecoderWithLM(langauage_model, trie, LM_ALPHA, LM_BETA)
 
     # Read original audio file
-    # file_obj = open(audio_file,'rb')
+    file_obj = open(audio_file,'rb')
     
     fin = wave.open(file_obj)
     fs = fin.getframerate()
@@ -74,7 +74,7 @@ def speech_to_text(file_obj):
     audio_length = fin.getnframes() * (1/sample_rate)
     timestamp = words_from_metadata(ds.sttWithMetadata(audio))
     fin.close()
-    # file_obj.close()
+    file_obj.close()
 
     # print("Infering {} file".format(audio_file))
     transcript = ds.stt(audio)
@@ -93,12 +93,13 @@ def get_deidentified_file(input_audio_file_path, timestamp, phi_word_list, fs=16
     # Each word in given list
     for word in phi_word_list:
         
+        word = str(word)
         # Each instance of the word
         for i in range(len(timestamp[word])):
             #Get start position in array
             start = int(timestamp[word][i]['start_time']*fs)
             #Get end position in array
-            end = int((timestamp[word][i]['duration']*fs) - start)
+            end = int((timestamp[word][i]['duration']*fs) + start)
             #Mute the required part
             arr[start: end] = 0
     return arr

@@ -3,6 +3,7 @@
 ## form the given string(st)
 
 ## We are here using spacy style regex matcher 
+import string
 
 def regex_extractor(strg,doc,st):
 #  print("in")  
@@ -29,11 +30,15 @@ def regex_extractor(strg,doc,st):
 
 def deidentifier(xml_content,nlp,nlp3,choice):
     
-    root = ET.fromstring(xml_content)
-    st=root.find('TEXT').text
-    
-    doc=nlp(root.find('TEXT').text)        ## spacy object containg processed string i.e string after passing through default en_core_web_sm spacy model.
-    st=root.find('TEXT').text              ## st=original string
+    try:
+      root = ET.fromstring(xml_content)
+      st=root.find('TEXT').text
+      
+      doc=nlp(root.find('TEXT').text)        ## spacy object containg processed string i.e string after passing through default en_core_web_sm spacy model.
+      st=root.find('TEXT').text              ## st=original string
+    except:
+      doc=nlp(xml_content)
+      st=xml_content
     
   #  print("1")
     
@@ -615,6 +620,7 @@ def master(xml_content,choice=2):
 
 def list_returner(st):
     a=[]
+    result = string.punctuation
     doc=nlp(st)
     for token in doc:
         if((token.tag_=="NN" or token.tag_=='NNP') and 'XX' not in str(token)):

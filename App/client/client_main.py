@@ -1,9 +1,10 @@
 from flask import (
    Blueprint, render_template, redirect, url_for,
-   request, flash, Response, jsonify, send_from_directory
+   request, flash, Response, jsonify, send_from_directory, make_response
 )
 from flask_login import login_required, current_user
 from connection import conn_pool
+import ipfshttpclient
 
 # test imports
 import os
@@ -14,6 +15,10 @@ client = Blueprint('client', __name__, url_prefix='/c/m', template_folder='templ
 @client.route('/')
 @login_required
 def home():
+
+   if request.headers.get('api') == 'true':
+      return jsonify(msg='Home page for client')
+   
    return render_template('client/client_home.html', title="Home")
 
 
@@ -23,7 +28,8 @@ def home():
 def all_datasets():
    
    # show datasets using pagination
-   page = int(request.args.get('page', 0)) # offset for the dataset in the database
+   page = request.args.get('page', 0) # offset for the dataset in the database
+   page = int(page)
    limit = 20 # no. of dataset
    
    offset = page*limit
@@ -60,12 +66,58 @@ def all_datasets():
    # release cursor which releases the conn
    conn_pool.releaseCursor(cursor)
    
+   if request.headers.get('api') == 'true':
+      return jsonify(
+         title="Datasets",
+         datasets=datasets, page=page, total=total,
+         dset_status=dset_status
+      )
+      
    return render_template(
       'client/client_dataset.html', title="Datasets",
       datasets=datasets, page=page, total=total,
       dset_status=dset_status
    )
 
+# route to download a particular dataset
+# this can only be accessed by a client if he/she has the approved application
+@client.route('/d/ipfs/<filehash>')
+@login_required
+def dataset_from_hash(filehash):
+
+   # acquire cursor
+   cursor = conn_pool.getCursor()
+   client = ipfshttpclient.connect()
+   
+   # check if this user has access to the dataset or not
+   stmt = cursor.mogrify("SELECT dataset_id FROM applications WHERE status=%s AND issuer_email=%s AND filehash=%s", ('approved', current_user.email, filehash) )
+   cursor.execute(stmt)
+   access = cursor.fetchone()
+   
+   if not access:
+      return make_response( jsonify(msg="You are not authorized to access this dataset"), 401)
+   
+   # if client has access
+   stmt = cursor.mogrify("SELECT filename FROM datasets WHERE filehash=%s", (filehash,))
+   cursor.execute(stmt)
+   dataset = cursor.fetchone()
+   
+   # release cursor which releases the conn
+   conn_pool.releaseCursor(cursor)
+   
+   # send the zip file
+   return Response(
+      client.cat(filehash),
+      headers={
+         "Pragma": "public",
+         "Cache-Control": "public",
+         "Content-Description": "File Transfer",
+         "Content-type": "application/octet-stream",
+         "Content-Transfer-Encoding": "binary",
+         # "Content-Length: ".filesize($filepath.$filename)),
+         "Content-Disposition": "attachment; filename=%s;" % dataset['filename']
+      }
+   )
 
 # route to download a particular dataset
 # this can only be accessed by a client if he/she has the approved application
@@ -82,11 +134,7 @@ def dataset_with_id(dset_id):
    access = cursor.fetchone()
    
    if not access:
-      
-      return Response(
-         "You are not authorized to access this dataset",
-         status=401,
-         content_type="text/plain")
+      return make_response( jsonify(msg="You are not authorized to access this dataset"), 401)
    
    # if client has access
    stmt = cursor.mogrify("SELECT * FROM datasets WHERE id=%s", (dset_id,))
@@ -103,7 +151,6 @@ def dataset_with_id(dset_id):
       open(filepath, 'rb'),
       headers={
          "Pragma": "public",
-         "Cache-Control": "must-revalidate, post-check=0, pre-check=0",
          "Cache-Control": "public",
          "Content-Description": "File Transfer",
          "Content-type": "application/octet-stream",
@@ -126,7 +173,7 @@ def application_for_dataset(dset_id):
       cursor = conn_pool.getCursor()
       
       # select id, name for the dataset and pass
-      stmt = cursor.mogrify("SELECT id, name FROM datasets WHERE id=%s", (dset_id,))
+      stmt = cursor.mogrify("SELECT id, name, filehash FROM datasets WHERE id=%s", (dset_id,))
       cursor.execute(stmt)
       
       dataset = cursor.fetchone()
@@ -134,12 +181,16 @@ def application_for_dataset(dset_id):
       # release the cursor and connection
       conn_pool.releaseCursor(cursor)     
       
+      if request.headers.get('api') == 'true':
+         return jsonify(dataset=dataset)
+      
       return render_template('client/client_apply_application.html', dataset=dataset)
    
    elif request.method == "POST":
       
       title = request.form['title']
       content = request.form['content']
+      filehash = request.form['filehash']
       
       # acquire the cursor and connection
       cursor = conn_pool.getCursor()
@@ -148,14 +199,17 @@ def application_for_dataset(dset_id):
       app_id = hexlify( os.urandom(15) ).decode('utf-8')
 
       # initially the application is submitted for processing
-      stmt = cursor.mogrify('''INSERT INTO applications(id, title, content, status, issuer_email, dataset_id)
-         VALUES(%s, %s, %s, %s, %s, %s)''', (
-            app_id, title, content, 'processing', current_user.email, dset_id
+      stmt = cursor.mogrify('''INSERT INTO applications(id, title, content, status, issuer_email, dataset_id, filehash)
+         VALUES(%s, %s, %s, %s, %s, %s, %s)''', (
+            app_id, title, content, 'processing', current_user.email, dset_id, filehash
          ))
       cursor.execute(stmt)
             
       # release the cursor and connection
       conn_pool.releaseCursor(cursor)
+      
+      if request.headers.get('api') == 'true':
+         return jsonify(msg='Application submitted successfully')
       
       flash('Your application submitted successfully')
       return redirect( url_for('client.application_for_dataset', dset_id=dset_id) )
@@ -173,6 +227,9 @@ def application():
    applications = cursor.fetchall()
    
    conn_pool.releaseCursor(cursor)
+   
+   if request.headers.get('api') == 'true':
+      return jsonify(applications=applications)
    
    return render_template('client/client_application.html',
       title="My Applications", applications=applications)

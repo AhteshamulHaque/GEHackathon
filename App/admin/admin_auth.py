@@ -1,6 +1,6 @@
 from flask import (
    Blueprint, render_template, redirect, url_for, request,
-   flash, session
+   flash, session, jsonify, make_response
 )
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -17,6 +17,9 @@ def admin_login_required(f):
       if 'admin' in session:
          return f(*args, **kwargs)
       else:
+         if request.headers.get('api') == 'true':
+            return make_response(jsonify(msg='Go to login'), 302)
+         
          return redirect(url_for('admin_auth.login'))
 
    return wrap
@@ -25,6 +28,10 @@ def admin_login_required(f):
 
 @admin_auth.route('/')
 def index():
+   
+   if request.headers.get('api') == 'true':
+      return jsonify(msg='Redirect to login page')
+   
    return redirect( url_for('admin_auth.login_page') )
 
 @admin_auth.route('/login')
@@ -32,6 +39,9 @@ def login_page():
    
    if session.get('admin', False):
       return redirect( url_for('admin.home') )
+   
+   if request.headers.get('api') == 'true':
+      return jsonify(msg='Login Page of admin')
    
    return render_template('admin/admin_login.html')
 
@@ -62,11 +72,17 @@ def login():
    session['admin'] = True
    
    # if the above check passes, then we know the user has the right credentials
+   if request.headers.get('api') == 'true':
+      return jsonify(msg='Successfully logged in')
+   
    return redirect(url_for('admin.home'))
 
 
 @admin_auth.route('/signup')
 def signup_page():
+   if request.headers.get('api') == 'true':
+      return jsonify(msg='SignUp Page')
+   
    return render_template('admin/admin_signup.html', title="Sign Up")
 
 
@@ -109,6 +125,9 @@ def signup():
    # release the cursor and conn
    conn_pool.releaseCursor(cursor)
 
+   if request.headers.get('api') == 'true':
+      return jsonify(msg='Sign Up successfull')
+   
    return redirect(url_for('admin.home'))
 
 
@@ -117,4 +136,8 @@ def signup():
 def logout():
    session.pop('username')
    session.pop('admin')
+   
+   if request.headers.get('api') == 'true':
+      return jsonify(msg='Logged out')
+   
    return redirect(url_for('admin.home'))

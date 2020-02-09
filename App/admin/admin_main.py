@@ -1,17 +1,20 @@
 from flask import (
    Blueprint, render_template, redirect, url_for, request,
-   flash, Response
+   flash, Response, jsonify
 )
 from threading import Thread
-import base64, os, time, mimetypes
+import base64, os, time, mimetypes, cv2
 from werkzeug import secure_filename
+import ipfshttpclient
 
 # app imports
 from admin.admin_auth import admin_login_required
 from connection import conn_pool
 
 # deidentification tool import
-from deidentifier.deidentify_main import deidentify_zipfile
+from deidentifier.deidentify_main import (
+   deidentify_zipfile, deidentifyText, deidentifyImage, deidentifyAudio
+)
 
 # imported for testing purpose
 from os import urandom
@@ -22,6 +25,10 @@ admin = Blueprint('admin', __name__, url_prefix='/a/m')
 @admin.route('/')
 @admin_login_required
 def home():
+
+   if request.headers.get('api') == 'true':
+      return jsonify(user='admin')
+   
    return render_template('admin/admin_home.html', title="Home")
 
 
@@ -30,7 +37,8 @@ def home():
 @admin_login_required
 def all_datasets():
    # show datasets using pagination
-   page = int(request.args.get('page', 0)) # offset for the dataset in the database
+   page = request.args.get('page', 0) # offset for the dataset in the database
+   page = int( page )
    limit = 20 # no. of dataset
    
    offset = page*limit
@@ -59,12 +67,45 @@ def all_datasets():
    # release cursor which releases the conn
    conn_pool.releaseCursor(cursor)
    
+   if request.headers.get('api') == 'true':
+      return jsonify(title="Datasets",datasets=datasets, page=page, total=total)
+   
    return render_template(
       'admin/admin_dataset.html', title="Datasets",
       datasets=datasets, page=page, total=total
    )
 
+# router to get dataset from blockchain
+@admin.route('/datasets/<filehash>')
+@admin_login_required
+def dataset_from_hash(filehash):
+   
+   # `filehash` defines the hash of source or deidentified dataset
+   # acquire cursor and ipfs connection
+   cursor = conn_pool.getCursor()
+   client = ipfshttpclient.connect()
+   
+   # get dataset metadata
+   stmt = cursor.mogrify("SELECT filename FROM datasets WHERE filehash=%s", (filehash,))
+   cursor.execute(stmt)
+   dataset = cursor.fetchone()
+   
+   # release cursor which releases the conn
+   conn_pool.releaseCursor(cursor)
 
+   # send the zip file
+   return Response(
+      client.cat(filehash),
+      headers={
+         "Pragma": "public",
+         "Cache-Control": "public",
+         "Content-Description": "File Transfer",
+         "Content-type": "application/octet-stream",
+         "Content-Transfer-Encoding": "binary",
+         "Content-Disposition": "attachment; filename=%s;" % dataset['filename']
+      }
+   )
+   
 # route for a particular dataset i.e it shows files
 # for a particular dataset using pagination
 # TODO - needs to be modified
@@ -95,12 +136,10 @@ def dataset_with_id(asset_type, dset_id):
       open(filepath, 'rb'),
       headers={
          "Pragma": "public",
-         "Cache-Control": "must-revalidate, post-check=0, pre-check=0",
          "Cache-Control": "public",
          "Content-Description": "File Transfer",
          "Content-type": "application/octet-stream",
          "Content-Transfer-Encoding": "binary",
-         # "Content-Length: ".filesize($filepath.$filename)),
          "Content-Disposition": "attachment; filename=%s;" % dataset['filename']
       }
    )
@@ -117,22 +156,25 @@ def applications():
    if request.method == "GET":
       
       # get all the applications
-      stmt = cursor.mogrify("SELECT id, title, content, status, issuer_email, dataset_id FROM applications WHERE status='processing'")
+      stmt = cursor.mogrify("SELECT * FROM applications WHERE status='processing'")
       cursor.execute(stmt)
       applications = cursor.fetchall()
       
       # release the cursor and connection
       conn_pool.releaseCursor(cursor) 
         
+      if request.headers.get('api') == 'true':
+         return jsonify(title="Application", applications=applications)
+      
       return render_template('admin/admin_application.html',
          title="Application", applications=applications)
    
    elif request.method == "POST":
       
       # get the issuer_id
-      issuer_email = request.form.get('issuer_email')
+      issuer_email = request.form.get('issuer_email') or request.json.get('issuer_email')
       # get the dataset_id
-      dset_id = request.form.get('dset_id')
+      dset_id = request.form.get('dset_id') or request.json.get('dset_id')
       
       # this means approve button is clicked
       if request.form.get('approve') != None:
@@ -149,6 +191,9 @@ def applications():
       conn_pool.releaseCursor(cursor)
       flash(msg)
       
+      if request.headers.get('api') == 'true':
+         return jsonify(msg='Application updated')
+      
       return redirect( url_for('admin.applications') )
    
 
@@ -158,8 +203,10 @@ def applications():
 def single_deidentification():
    
    if request.method == 'GET':
+      if request.headers.get('api') == 'true':
+         return jsonify(msg='Single Deidentification Page')
+      
       return render_template('admin/deidentify.html', title="Deidentify")
-   
    
    elif request.method == 'POST':
       
@@ -168,24 +215,54 @@ def single_deidentification():
       
       mimetype = mime.guess_type(file.filename)[0]
       
+      # add support for dicom images
+      mime.add_type('application/dicom', '.dcm')
+      
+      result = f'data:{mimetype};base64,'
+      
       # deidentify according to filetype
       if 'image' in mimetype:
-         print("image passed")
-         result = f'data:{mimetype};base64,'
          
-         result += (base64.b64encode( file.stream.read() )).decode('utf-8')
+         # deidentify image data
+         new_img = deidentifyImage(file.stream.read())
          
-         print(result[:40])
+         # save in deidentified file in local
+         # Need to be removed after writing to zip file
+         cv2.imwrite('deidentified_'+file.filename, new_img)
+         
+         # convert to base64 for rendering
+         result += (base64.b64encode( open('deidentified_'+file.filename, 'rb').read()  )).decode('utf-8')
+         
+         # remove the file used for temporary reference
+         os.remove('deidentified_'+file.filename)
+         
       elif 'audio' in mimetype:
-         print("audio passed")
-         result = "Some text"
+         
+         # pass to audio model. Returns array of data
+         filepath = file.filename
+         
+         # save file
+         file.save(filepath)
+         
+         # deidentify audio
+         deidentifyAudio(filepath)
+         
+         #convert to base64 for playing
+         result += (base64.b64encode( open('deidentified_'+file.filename, 'rb').read()  )).decode('utf-8')
+         
+         # remove the file used for temporary reference
+         os.remove(filepath)
+         os.remove('deidentified_'+filepath)
+         
       else:
-         print("text passed")
-         result = file.stream.read().decode('utf-8')
+         data = file.stream.read().decode('utf-8')
+         result = deidentifyText(data)
+         
+      if request.headers.get('api') == 'true':
+         return jsonify(title="Deidentify", result=result, mimetype=mimetype)
       
       return render_template('admin/deidentify.html',
          title="Deidentify", result=result, mimetype=mimetype)
-      
       
 
 # upload logic for admin datasets upload
@@ -230,6 +307,9 @@ def upload():
    # release the cursor and connection
    conn_pool.releaseCursor(cursor)
    
+   if request.headers.get('api') == 'true':
+      return jsonify(msg='Upload successfull')
+   
    return redirect( url_for('admin.all_datasets') )
 
 
@@ -240,30 +320,34 @@ def deidentify_datasets(zip_info):
    # this will be done automatically after deidentification
    file_count = deidentify_zipfile(zip_info['src_zip_path'], zip_info['dest_zip_path'] )
    
+   # connect to block chain
+   client = ipfshttpclient.connect()
+   
+   # send the deidentified file to blockchain
+   block_file = client.add(zip_info['dest_zip_path'])
+   
    # acquire the cursor and connection
    cursor = conn_pool.getCursor()
    
    # update the datasets for the admin
-   stmt = cursor.mogrify("UPDATE admin_datasets SET upload_status=%(status)s WHERE id=%(id)s", {
+   stmt = cursor.mogrify("UPDATE admin_datasets SET upload_status=%(status)s, filecount=%(filecount)s, filehash=%(hash)s WHERE id=%(id)s", {
       'id': zip_info['id'],
-      'status': 1
-   })
-   cursor.execute(stmt)
-   
-   # update filecount for the admin
-   stmt = cursor.mogrify("UPDATE admin_datasets SET filecount=%(filecount)s  WHERE id=%(id)s", {
-      'id': zip_info['id'],
+      'status': 1,
+      'hash': block_file['Hash'],
       'filecount': file_count
    })
+   
    cursor.execute(stmt)
    
    # insert the datasets for the client
-   stmt = cursor.mogrify("INSERT INTO datasets VALUES(%(id)s, %(name)s, %(filename)s, %(filecount)s)", {
+   stmt = cursor.mogrify("INSERT INTO datasets VALUES(%(id)s, %(name)s, %(filename)s, %(hash)s, %(filecount)s)", {
       'id': zip_info['id'],
       'name': zip_info['name'],
       'filename': zip_info['filename'],
+      'hash': block_file['Hash'],
       'filecount': file_count
    })
+
    cursor.execute(stmt)
    
    # release the cursor and connection

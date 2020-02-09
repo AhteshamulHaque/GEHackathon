@@ -25,13 +25,20 @@
 
       {% if 'image' in mimetype %}
          <img class="ui fluid image" src = "{{ result }}">
-      {% else %}
+      {% elif 'text' in mimetype %}
          <div class="ui segment">
             <pre>
                {{ result }}
             </pre>
          </div>
+      {% else %}
+      <div id="audiodiv" >
+         <audio src="{{ result }}"  controls="controls" autobuffer="autobuffer">
+         </audio>
+      </div>
+         
       {% endif %}
+
    {% endif %}
 </div>
 {% endblock %}

@@ -15,6 +15,7 @@ from deidentifier.burnt_text_redact import main as _main
 # import ml/ai models for audio deidentification
 from deidentifier.speech_model.SpeechToText import speech_to_text, get_deidentified_file
 
+''' Function to deidentify data in bulk (zip form) '''
 def deidentify_zipfile(src_filename, dest_filename):
    
    # file count
@@ -52,8 +53,9 @@ def deidentify_zipfile(src_filename, dest_filename):
             # read data of the file
             data = zpin.read(file)
 
-            # data, dic, shift = master(data)  ## 2 for shifted dates. 1 to remove them completely
-            data = master(data)[0]  ## 2 for shifted dates. 1 to remove them completely
+            # data, dic, shift = master(data). 2 for shifted dates. 1 to remove them completely
+            # pass text string to the function
+            data = deidentifyText(data)
             
             # write to the write mode zipfile
             zpout.writestr(info, data)
@@ -64,50 +66,34 @@ def deidentify_zipfile(src_filename, dest_filename):
             print("Deidentifying image file %s"%file)
             
             # open the file
-            data = zpin.read(file)
+            image_data = zpin.read(file)
             
-            # convert string data to numpy array
-            npimg = numpy.frombuffer(data, dtype=numpy.uint8)
+            # deidentify image data
+            new_img = deidentifyImage(image_data)
             
-            # convert numpy array to image
-            img = cv2.imdecode(npimg, cv2.IMREAD_GRAYSCALE)
-
-            # cv2.imwrite('deidentified_'+file, img)
-            new_img, detected = main(img)
-            
-            if not detected:
-               
-               # convert numpy array to image
-               imge = cv2.imdecode(npimg, cv2.IMREAD_GRAYSCALE)
-               new_img = _main(img)
-               
+            # save in deidentified file in local
+            # Need to be removed after writing to zip file
             cv2.imwrite('deidentified_'+file, new_img)
             
             # write to another zipfile
             zpout.write('deidentified_'+file, file)
-            
-            # delete the src image file
+
+            # DUPLICATED IN AUDIO ALSO BECAUSE text file is not extracted
             os.remove('deidentified_'+file)
-            
+            os.remove(file)   
          ####################### Else the filetype is audio ##########################
          else:
-            file_obj = zpin.open(file)
             print("Deidentifying audio file %s"%file)
             
-            # pass to audio model
-            # Returns text data
-            transcript, timestamp = speech_to_text(file_obj)
+            # pass to audio model. Returns array of data
+            deidentifyAudio(file)
             
-            a = list_returner(transcript)   
-
-            array = get_deidentified_file(file, timestamp, a)
-            file_obj.close()
-            
-            write('deidentified_'+file, rate=16000, data=array)
             zpout.write('deidentified_'+file, file)
-            os.remove('deidentified_'+file)
+            # os.remove('deidentified_'+file)
         
-         os.remove(file)
+         # delete the src image file
+            os.remove('deidentified_'+file)
+            os.remove(file)
              
          print("Success...")
       
@@ -115,3 +101,43 @@ def deidentify_zipfile(src_filename, dest_filename):
    print("Time taken {:.2f}".format( (timeit.default_timer()-start)/60 ) )
    
    return count
+
+
+''' Function to deidentify text data '''
+def deidentifyText(text_data):  # text data is in form of string
+   return master(text_data)[0]
+
+
+''' Function to deidentify image data '''
+def deidentifyImage(image_data): # image data is in form of string
+   # convert string data to numpy array
+   npimg = numpy.frombuffer(image_data, dtype=numpy.uint8)
+   
+   # convert numpy array to image
+   img = cv2.imdecode(npimg, cv2.IMREAD_GRAYSCALE)
+
+   # cv2.imwrite('deidentified_'+file, img)
+   new_img, detected = main(img)
+   
+   if not detected:
+      
+      # convert numpy array to image
+      imge = cv2.imdecode(npimg, cv2.IMREAD_GRAYSCALE)
+      new_img = _main(img)
+
+   return new_img
+
+
+''' Function to deidentify audio data '''
+# file is file name string
+# make a local file for audio
+def deidentifyAudio(filename):
+   print("Deidentifying audio file %s"%filename)
+   
+   # pass to audio model. Returns text data
+   transcript, timestamp = speech_to_text(filename)
+   
+   a = list_returner(transcript) 
+   
+   array = get_deidentified_file(filename, timestamp, a)
+   write('deidentified_'+filename, rate=16000, data=array)

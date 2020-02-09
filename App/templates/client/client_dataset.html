@@ -27,10 +27,11 @@
         <table class="ui compact celled table">
             <thead>
                 <tr>
-                <th class="ten wide">Dataset</th>
+                <th class="seven wide">Dataset</th>
                 <th class="two wide">File Count</th>
                 <th class="two wide">Status</th>
-                <th class="two wide">Download</th>
+                <th class="two wide">Download Deidentify</th>
+                <th class="three wide">Download IPFS</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,7 +46,6 @@
                         <!-- Try to get dataset status from dset_status
                              If present means an application was submitted -->
                         {% set status = dset_status.get(dataset['id'], None) %}
-
                         {% if status == 'processing' %}
                             <td class="warning"><i class="sync icon"></i> Processing...</td>
                         {% elif status == 'approved' %}
@@ -56,7 +56,9 @@
 
                         {% if dataset['id'] in dset_status.keys() %}
                             <td><a href="{{ url_for('client.dataset_with_id', dset_id=dataset['id']) }}">Download</a></td>
+                            <td><a href="{{ url_for('client.dataset_from_hash', filehash=dataset['filehash']) }}">Download</a></td>
                         {% else %}
+                            <td>Not Available</td>
                             <td>Not Available</td>
                         {% endif %}
 
@@ -66,7 +68,7 @@
             </tbody>
             <tfoot class="full-width">
                 <tr>
-                <th colspan="4">
+                <th colspan="16">
                     <!-- Render pagination for other datasets -->
                     <div class="ui right floated pagination menu">
                         {% if page > 0 %}
